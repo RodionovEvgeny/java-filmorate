@@ -15,12 +15,12 @@ import java.util.Set;
 public class FilmController {
 
     private static int nextVacantId = 1;
-    private Map<Integer, Film> films = new HashMap();
+    private final Map<Integer, Film> films = new HashMap<>();
 
     @PostMapping
     private Film addFilm(@Valid @RequestBody Film film) {
         if (film.getId() == 0) film.setId(nextVacantId++);
-        films.put(film.getId(),film);
+        films.put(film.getId(), film);
         return film;
     }
 
@@ -29,7 +29,7 @@ public class FilmController {
         if (!films.containsKey(film.getId())) {
             throw new ValidationException("Данного фильма не существует.");
         }
-        films.put(film.getId(),film);
+        films.put(film.getId(), film);
         return film;
     }
 
@@ -37,5 +37,4 @@ public class FilmController {
     private Set<Film> getAllFilms() {
         return new HashSet<>(films.values());
     }
-
 }
