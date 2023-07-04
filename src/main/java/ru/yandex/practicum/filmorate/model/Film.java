@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import ru.yandex.practicum.filmorate.validation.ValidDateFilm;
+import ru.yandex.practicum.filmorate.validation.ValidFilmId;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
@@ -11,14 +12,14 @@ import java.time.LocalDate;
 @Data
 public class Film {
     public static final LocalDate FIRST_FILM_DATE = LocalDate.of(1895, 12, 28);
-
+@ValidFilmId
     private int id;
-    @NotBlank
+    @NotBlank(message = "Имя фильма не заполнено.")
     private final String name;
-    @Size(min = 0, max = 200)
+    @Size(min = 0, max = 200, message = "Длина описания должна быть от 0 до 200 символов.")
     private final String description;
-    @Positive
+    @Positive(message = "Продолжительность не может быть отрицательной.")
     private final int duration;
-    @ValidDateFilm
+    @ValidDateFilm(message = "Дата релиза не может быть раньше создания первого фильма.")
     private LocalDate releaseDate;
 }

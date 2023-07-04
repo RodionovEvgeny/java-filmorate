@@ -11,12 +11,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({FIELD})
 @Retention(RUNTIME)
-@Constraint(validatedBy = DateFilmValidator.class)
+@Constraint(validatedBy = FilmIdValidator.class)
 @Documented
 
-public @interface ValidDateFilm {
+public @interface ValidFilmId {
 
-    String message() default "{Недопустимая дата релиза фильма.}";
+    String message() default "{Фильма с данным id не существует.}";
 
     Class<?>[] groups() default {};
 

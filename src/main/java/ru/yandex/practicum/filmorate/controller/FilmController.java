@@ -15,7 +15,7 @@ import java.util.Set;
 public class FilmController {
 
     private static int nextVacantId = 1;
-    private final Map<Integer, Film> films = new HashMap<>();
+    public static final Map<Integer, Film> films = new HashMap<>();
 
     @PostMapping
     private Film addFilm(@Valid @RequestBody Film film) {
@@ -26,9 +26,9 @@ public class FilmController {
 
     @PutMapping
     private Film updateFilm(@Valid @RequestBody Film film) {
-        if (!films.containsKey(film.getId())) {
+       /* if (!films.containsKey(film.getId())) {
             throw new ValidationException("Данного фильма не существует.");
-        }
+        }*/
         films.put(film.getId(), film);
         return film;
     }
