@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import ru.yandex.practicum.filmorate.validation.ValidUserId;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -9,8 +10,7 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 @Data
 public class User {
-    private static int nextId = 1;
-    @EqualsAndHashCode.Include
+    @ValidUserId
     private int id;
     @Email
     private final String email;

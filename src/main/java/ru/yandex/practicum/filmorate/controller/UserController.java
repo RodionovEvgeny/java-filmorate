@@ -15,7 +15,7 @@ import java.util.Set;
 public class UserController {
 
     private static int nextVacantId = 1;
-    private Map<Integer, User> users = new HashMap();
+    public static final Map<Integer, User> users = new HashMap<>();
 
     @PostMapping
     private User addUser(@Valid @RequestBody User user) {
@@ -28,9 +28,9 @@ public class UserController {
 
     @PutMapping
     private User updateUser(@Valid @RequestBody User user) {
-        if (!users.containsKey(user.getId())) {
+        /*if (!users.containsKey(user.getId())) {
             throw new ValidationException("Данного пользователя не существует.");
-        }
+        }*/
         users.put(user.getId(), user);
         return user;
     }
