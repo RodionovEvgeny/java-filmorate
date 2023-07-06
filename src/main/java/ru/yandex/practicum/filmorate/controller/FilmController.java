@@ -16,7 +16,15 @@ import java.util.Set;
 public class FilmController {
 
     private static int nextVacantId = 1;
-    public static final Map<Integer, Film> films = new HashMap<>();
+    private static final Map<Integer, Film> films = new HashMap<>();
+
+    public static Map<Integer, Film> getFilms(){
+        return films;
+    }
+    public static void deleteAllFilms(){
+        films.clear();
+        nextVacantId = 1;
+    }
 
     @PostMapping
     private Film addFilm(@Valid @RequestBody Film film) {

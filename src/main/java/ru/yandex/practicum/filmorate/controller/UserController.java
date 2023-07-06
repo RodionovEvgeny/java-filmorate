@@ -16,13 +16,21 @@ import java.util.Set;
 public class UserController {
 
     private static int nextVacantId = 1;
-    public static final Map<Integer, User> users = new HashMap<>();
+    private static final Map<Integer, User> users = new HashMap<>();
+
+    public static Map<Integer, User> getUsers(){
+        return users;
+    }
+     public static void deleteAllUsers(){
+        users.clear();
+        nextVacantId = 1;
+     }
 
     @PostMapping
     private User addUser(@Valid @RequestBody User user) {
         if (user.getId() == 0) user.setId(nextVacantId++);
-        if (user.getName() == null)
-            user.setName(user.getLogin()); // TODO make validation class to do it through annotations
+        if (user.getName() == null || user.getName().isEmpty())
+            user.setName(user.getLogin());
         users.put(user.getId(), user);
         log.debug("Пользователь добавлен. Текущее количество пользователей {}", users.size());
         return user;

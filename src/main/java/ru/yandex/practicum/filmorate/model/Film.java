@@ -21,5 +21,5 @@ public class Film {
     @Positive(message = "Продолжительность не может быть отрицательной.")
     private final int duration;
     @ValidDateFilm(message = "Дата релиза не может быть раньше создания первого фильма.")
-    private LocalDate releaseDate;
+    private final LocalDate releaseDate;
 }

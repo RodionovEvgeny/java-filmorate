@@ -12,6 +12,6 @@ public class FilmIdValidator implements ConstraintValidator<ValidFilmId, Integer
 
     @Override
     public boolean isValid(Integer id, ConstraintValidatorContext constraintValidatorContext) {
-        return id == 0 || FilmController.films.containsKey(id);
+        return id == 0 || FilmController.getFilms().containsKey(id);
     }
 }
