@@ -15,7 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 
 public @interface ValidFilmId {
-
     String message() default "{Фильма с данным id не существует.}";
 
     Class<?>[] groups() default {};

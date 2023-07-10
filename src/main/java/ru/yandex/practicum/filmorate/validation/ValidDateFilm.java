@@ -15,7 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 
 public @interface ValidDateFilm {
-
     String message() default "{Недопустимая дата релиза фильма.}";
 
     Class<?>[] groups() default {};

@@ -2,9 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldNameConstants;
+
 import ru.yandex.practicum.filmorate.validation.ValidUserId;
 
 import javax.validation.constraints.Email;
@@ -15,14 +13,13 @@ import java.time.LocalDate;
 @AllArgsConstructor
 
 public class User {
-    @ValidUserId
+    @ValidUserId(message = "Пользователь с данным id не найден.")
     private int id;
-    @Email
+    @Email(message = "Введен некорректный email.")
     private final String email;
-    @NotEmpty(message = "Empty login")
+    @NotEmpty(message = "Введен пустой логин.")
     private final  String login;
-
     private String name;
-    @Past
+    @Past(message = "Введена недопустимая дата рождения.")
     private final LocalDate birthday;
 }

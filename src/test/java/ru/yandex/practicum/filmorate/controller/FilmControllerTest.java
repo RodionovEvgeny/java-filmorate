@@ -17,9 +17,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class FilmControllerTest {
+    private final Film film1 = new Film("Name 1", "Description 1.",
+            15, Film.FIRST_FILM_DATE.plusDays(15));
+    private final Film updatedFilm = new Film("New Name", "New Description.",
+            15, Film.FIRST_FILM_DATE.plusDays(15));
+    private final Film film2 = new Film("Name 2", "Description 2.",
+            15, Film.FIRST_FILM_DATE.plusDays(15));
+    private final Film invalidDescriptionFilm = new Film("Name",
+            "Invalid description. Invalid description. Invalid description. " +
+                    "Invalid description. Invalid description. Invalid description. " +
+                    "Invalid description. Invalid description. Invalid description. " +
+                    "Invalid description. Invalid description. Invalid description. ",
+            15, Film.FIRST_FILM_DATE.plusDays(15));
+    private final Film invalidNameFilm = new Film("", "Description.",
+            15, Film.FIRST_FILM_DATE.plusDays(15));
+    private final Film invalidDurationFilm = new Film("Name", "Description.",
+            0, Film.FIRST_FILM_DATE.plusDays(15));
+    private final Film invalidReleaseDateFilm = new Film("Name", "Description.",
+            15, Film.FIRST_FILM_DATE.minusDays(15));
+
     @Autowired
     private ObjectMapper objectMapper;
-
     @Autowired
     private MockMvc mockMvc;
 
@@ -30,11 +48,9 @@ class FilmControllerTest {
 
     @Test
     void hasToAddValidFilm() throws Exception {
-        Film film = new Film("Name", "The best film ever.", 15, Film.FIRST_FILM_DATE.plusDays(15));
-
         mockMvc.perform(
                         post("/films")
-                                .content(objectMapper.writeValueAsString(film))
+                                .content(objectMapper.writeValueAsString(film1))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
@@ -43,16 +59,14 @@ class FilmControllerTest {
 
     @Test
     void hasToUpdateValidFilm() throws Exception {
-        Film film = new Film("Name", "The best film ever.", 15, Film.FIRST_FILM_DATE.plusDays(15));
         mockMvc.perform(
                 post("/films")
-                        .content(objectMapper.writeValueAsString(film))
+                        .content(objectMapper.writeValueAsString(film1))
                         .contentType(MediaType.APPLICATION_JSON));
-        Film film2 = new Film("Name", "The best of the best film ever.", 15, Film.FIRST_FILM_DATE.plusDays(15));
-        film2.setId(1);
+        updatedFilm.setId(1);
         mockMvc.perform(
                         put("/films")
-                                .content(objectMapper.writeValueAsString(film2))
+                                .content(objectMapper.writeValueAsString(updatedFilm))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
@@ -60,18 +74,15 @@ class FilmControllerTest {
     }
 
     @Test
-    void hasToReturnAllFilms() throws Exception { // TODO посмотреть как ответ от сервака обработать в моке. Надо чекнуть список там
-        Film film = new Film("Name", "The best film ever.", 15, Film.FIRST_FILM_DATE.plusDays(15));
+    void hasToReturnAllFilms() throws Exception {
         mockMvc.perform(
                 post("/films")
-                        .content(objectMapper.writeValueAsString(film))
+                        .content(objectMapper.writeValueAsString(film1))
                         .contentType(MediaType.APPLICATION_JSON));
-        Film film2 = new Film("Name2", "The best of the best film ever.", 15, Film.FIRST_FILM_DATE.plusDays(15));
         mockMvc.perform(
                 post("/films")
                         .content(objectMapper.writeValueAsString(film2))
                         .contentType(MediaType.APPLICATION_JSON));
-
         mockMvc.perform(
                         get("/films")
                 )
@@ -79,18 +90,11 @@ class FilmControllerTest {
         Assertions.assertEquals(2, FilmController.getFilms().size());
     }
 
-
     @Test
     void hasToIgnoreInvalidDescriptionFilm() throws Exception {
-        Film film = new Film("Name", "The best film ever.The best film ever." +
-                "The best film ever.The best film ever.The best film ever.The best film ever." +
-                "The best film ever.The best film ever.The best film ever.The best film ever." +
-                "The best film ever.The best film ever.The best film ever.The best film ever.",
-                15, Film.FIRST_FILM_DATE.plusDays(15));
-
         mockMvc.perform(
                         post("/films")
-                                .content(objectMapper.writeValueAsString(film))
+                                .content(objectMapper.writeValueAsString(invalidDescriptionFilm))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
@@ -99,12 +103,9 @@ class FilmControllerTest {
 
     @Test
     void hasToIgnoreInvalidNameFilm() throws Exception {
-        Film film = new Film("", "The best film ever.The best film ever.",
-                15, Film.FIRST_FILM_DATE.plusDays(15));
-
         mockMvc.perform(
                         post("/films")
-                                .content(objectMapper.writeValueAsString(film))
+                                .content(objectMapper.writeValueAsString(invalidNameFilm))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
@@ -113,12 +114,9 @@ class FilmControllerTest {
 
     @Test
     void hasToIgnoreInvalidDurationFilm() throws Exception {
-        Film film = new Film("Name", "The best film ever.The best film ever.",
-                0, Film.FIRST_FILM_DATE.plusDays(15));
-
         mockMvc.perform(
                         post("/films")
-                                .content(objectMapper.writeValueAsString(film))
+                                .content(objectMapper.writeValueAsString(invalidDurationFilm))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
@@ -127,12 +125,9 @@ class FilmControllerTest {
 
     @Test
     void hasToIgnoreInvalidReleaseDateFilm() throws Exception {
-        Film film = new Film("Name", "The best film ever.The best film ever.",
-                15, Film.FIRST_FILM_DATE.minusDays(15));
-
         mockMvc.perform(
                         post("/films")
-                                .content(objectMapper.writeValueAsString(film))
+                                .content(objectMapper.writeValueAsString(invalidReleaseDateFilm))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
