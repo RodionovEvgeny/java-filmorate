@@ -11,7 +11,6 @@ import javax.validation.constraints.Past;
 import java.time.LocalDate;
 @Data
 @AllArgsConstructor
-
 public class User {
     @ValidUserId(message = "Пользователь с данным id не найден.")
     private int id;
