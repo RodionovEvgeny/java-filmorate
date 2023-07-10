@@ -1,6 +1,10 @@
 package ru.yandex.practicum.filmorate.validation;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 import ru.yandex.practicum.filmorate.controller.FilmController;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -8,6 +12,9 @@ import javax.validation.ConstraintValidatorContext;
 public class FilmIdValidator implements ConstraintValidator<ValidFilmId, Integer> {
     @Override
     public boolean isValid(Integer id, ConstraintValidatorContext constraintValidatorContext) {
-        return id == 0 || FilmController.getFilms().containsKey(id);
+        if (!(id == 0 || FilmController.getFilms().containsKey(id))) {
+            throw new ValidationException("Пользователь с такиим id не найден.");
+        }
+        return true;
     }
 }
