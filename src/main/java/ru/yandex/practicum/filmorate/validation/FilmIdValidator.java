@@ -10,7 +10,7 @@ public class FilmIdValidator implements ConstraintValidator<ValidFilmId, Integer
     @Override
     public boolean isValid(Integer id, ConstraintValidatorContext constraintValidatorContext) {
         if (!(id == 0 || FilmController.getFilms().containsKey(id))) {
-            throw new ValidationException("Пользователь с такиим id не найден.");
+            throw new ValidationException("Пользователь с такиим id не найден!");
         }
         return true;
     }
