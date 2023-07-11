@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import ru.yandex.practicum.filmorate.validation.ValidDateFilm;
-import ru.yandex.practicum.filmorate.validation.ValidFilmId;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
