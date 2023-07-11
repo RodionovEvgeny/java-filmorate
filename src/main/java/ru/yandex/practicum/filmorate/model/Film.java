@@ -21,6 +21,6 @@ public class Film {
     private final int duration;
     @ValidDateFilm(message = "Дата релиза не может быть раньше создания первого фильма.")
     private final LocalDate releaseDate;
-    @ValidFilmId(message = "Фильм с данным id не найден.")
+    // @ValidFilmId(message = "Фильм с данным id не найден.")
     private int id;
 }

@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import javax.validation.Valid;
@@ -38,6 +39,10 @@ public class UserController {
 
     @PutMapping
     private User updateUser(@Valid @RequestBody User user) {
+        if (!(user.getId() == 0 || UserController.getUsers().containsKey(user.getId()))) {
+            log.warn("Пользователь с id = {} не найден.", user.getId());
+            throw new ValidationException("Пользователь с такиим id не найден.");
+        }
         users.put(user.getId(), user);
         log.debug("Данные пользователя {} обновлены.", user.getLogin());
         return user;

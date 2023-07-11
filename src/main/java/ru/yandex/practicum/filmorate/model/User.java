@@ -13,7 +13,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class User {
 
-    @ValidUserId(message = "Пользователь с данным id не найден.")
+    // @ValidUserId(message = "Пользователь с данным id не найден.")
     private int id;
     @Email(message = "Введен некорректный email.")
     private final String email;

@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 import javax.validation.Valid;
@@ -36,6 +37,10 @@ public class FilmController {
 
     @PutMapping
     private Film updateFilm(@Valid @RequestBody Film film) {
+        if (!(film.getId() == 0 || FilmController.getFilms().containsKey(film.getId()))) {
+            log.warn("Фильм с id = {} не найден.", film.getId());
+            throw new ValidationException("Фильм с такиим id не найден.");
+        }
         films.put(film.getId(), film);
         log.debug("Данные фильма {} обновлены.", film.getName());
         return film;

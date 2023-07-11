@@ -74,6 +74,22 @@ class FilmControllerTest {
     }
 
     @Test
+    void hasToIgnoreInvalidIdFilm() throws Exception {
+        mockMvc.perform(
+                post("/films")
+                        .content(objectMapper.writeValueAsString(film1))
+                        .contentType(MediaType.APPLICATION_JSON));
+        updatedFilm.setId(99);
+        mockMvc.perform(
+                        put("/films")
+                                .content(objectMapper.writeValueAsString(updatedFilm))
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andExpect(status().isNotFound());
+        Assertions.assertEquals(1, FilmController.getFilms().size());
+    }
+
+    @Test
     void hasToReturnAllFilms() throws Exception {
         mockMvc.perform(
                 post("/films")

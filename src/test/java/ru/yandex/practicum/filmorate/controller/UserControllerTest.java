@@ -120,7 +120,7 @@ class UserControllerTest {
                                 .content(objectMapper.writeValueAsString(invalidIdUser))
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
         Assertions.assertEquals(1, UserController.getUsers().size());
     }
 }
