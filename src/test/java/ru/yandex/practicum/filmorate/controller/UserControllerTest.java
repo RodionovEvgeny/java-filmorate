@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -13,6 +12,7 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -50,7 +50,11 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
-        Assertions.assertEquals(1, UserController.getUsers().size());
+        mockMvc.perform(
+                        get("/users")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -66,7 +70,11 @@ class UserControllerTest {
                 )
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value("New Name"));
-        Assertions.assertEquals(1, UserController.getUsers().size());
+        mockMvc.perform(
+                        get("/users")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -83,8 +91,8 @@ class UserControllerTest {
                         get("/users")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].name").value("login"));
-        Assertions.assertEquals(2, UserController.getUsers().size());
+                .andExpect(jsonPath("$[1].name").value("login"))
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
@@ -95,7 +103,11 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
-        Assertions.assertEquals(0, UserController.getUsers().size());
+        mockMvc.perform(
+                        get("/users")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -106,7 +118,11 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
-        Assertions.assertEquals(0, UserController.getUsers().size());
+        mockMvc.perform(
+                        get("/users")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -121,6 +137,10 @@ class UserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound());
-        Assertions.assertEquals(1, UserController.getUsers().size());
+        mockMvc.perform(
+                        get("/users")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 }

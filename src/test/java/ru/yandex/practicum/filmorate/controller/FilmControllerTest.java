@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,30 +10,34 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import java.time.LocalDate;
+
+import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 class FilmControllerTest {
     private final Film film1 = new Film("Name 1", "Description 1.",
-            15, Film.FIRST_FILM_DATE.plusDays(15));
+            15, LocalDate.of(1895, 12, 28).plusDays(15));
     private final Film updatedFilm = new Film("New Name", "New Description.",
-            15, Film.FIRST_FILM_DATE.plusDays(15));
+            15, LocalDate.of(1895, 12, 28).plusDays(15));
     private final Film film2 = new Film("Name 2", "Description 2.",
-            15, Film.FIRST_FILM_DATE.plusDays(15));
+            15, LocalDate.of(1895, 12, 28).plusDays(15));
     private final Film invalidDescriptionFilm = new Film("Name",
             "Invalid description. Invalid description. Invalid description. " +
                     "Invalid description. Invalid description. Invalid description. " +
                     "Invalid description. Invalid description. Invalid description. " +
                     "Invalid description. Invalid description. Invalid description. ",
-            15, Film.FIRST_FILM_DATE.plusDays(15));
+            15, LocalDate.of(1895, 12, 28).plusDays(15));
     private final Film invalidNameFilm = new Film("", "Description.",
-            15, Film.FIRST_FILM_DATE.plusDays(15));
+            15, LocalDate.of(1895, 12, 28).plusDays(15));
     private final Film invalidDurationFilm = new Film("Name", "Description.",
-            0, Film.FIRST_FILM_DATE.plusDays(15));
+            0, LocalDate.of(1895, 12, 28).plusDays(15));
     private final Film invalidReleaseDateFilm = new Film("Name", "Description.",
-            15, Film.FIRST_FILM_DATE.minusDays(15));
+            15, LocalDate.of(1895, 12, 28).minusDays(15));
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -54,7 +57,12 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
-        Assertions.assertEquals(1, FilmController.getFilms().size());
+
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -70,7 +78,11 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isOk());
-        Assertions.assertEquals(1, FilmController.getFilms().size());
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -86,7 +98,11 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isNotFound());
-        Assertions.assertEquals(1, FilmController.getFilms().size());
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
@@ -102,8 +118,8 @@ class FilmControllerTest {
         mockMvc.perform(
                         get("/films")
                 )
-                .andExpect(status().isOk());
-        Assertions.assertEquals(2, FilmController.getFilms().size());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)));
     }
 
     @Test
@@ -114,7 +130,11 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
-        Assertions.assertEquals(0, FilmController.getFilms().size());
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -125,7 +145,11 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
-        Assertions.assertEquals(0, FilmController.getFilms().size());
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -136,7 +160,11 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
-        Assertions.assertEquals(0, FilmController.getFilms().size());
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 
     @Test
@@ -147,6 +175,10 @@ class FilmControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(status().isBadRequest());
-        Assertions.assertEquals(0, FilmController.getFilms().size());
+        mockMvc.perform(
+                        get("/films")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(0)));
     }
 }
