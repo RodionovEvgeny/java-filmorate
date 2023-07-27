@@ -13,7 +13,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Retention(RUNTIME)
 @Constraint(validatedBy = DateFilmValidator.class)
 @Documented
-
 public @interface ValidDateFilm {
     String message() default "{Недопустимая дата релиза фильма.}";
 
