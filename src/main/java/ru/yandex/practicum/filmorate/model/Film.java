@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 @Data
 public class Film {
-    public static final LocalDate FIRST_FILM_DATE = LocalDate.of(1895, 12, 28);
 
     @NotBlank(message = "Имя фильма не заполнено.")
     private final String name;
