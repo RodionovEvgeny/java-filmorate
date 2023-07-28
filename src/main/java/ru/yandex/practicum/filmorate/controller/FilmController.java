@@ -1,54 +1,41 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.Valid;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 @RestController
 @RequestMapping("/films")
 public class FilmController {
-    private static final Map<Integer, Film> films = new HashMap<>();
-    private static int nextVacantId = 1;
+    private final FilmStorage filmStorage;
 
-    public static Map<Integer, Film> getFilms() {
-        return films;
-    }
-
-    public static void deleteAllFilms() {
-        films.clear();
-        nextVacantId = 1;
+    @Autowired
+    public FilmController(FilmStorage filmStorage) {
+        this.filmStorage = filmStorage;
     }
 
     @PostMapping
     private Film addFilm(@Valid @RequestBody Film film) {
-        if (film.getId() == 0) film.setId(nextVacantId++);
-        films.put(film.getId(), film);
-        log.debug("Фильм добавлен. Текущее количество фильмов {}", films.size());
-        return film;
+        return filmStorage.addFilm(film);
     }
 
     @PutMapping
     private Film updateFilm(@Valid @RequestBody Film film) {
-        if (!(film.getId() == 0 || films.containsKey(film.getId()))) {
-            log.warn("Фильм с id = {} не найден.", film.getId());
-            throw new ValidationException("Фильм с такиим id не найден.");
-        }
-        films.put(film.getId(), film);
-        log.debug("Данные фильма {} обновлены.", film.getName());
-        return film;
+        return filmStorage.updateFilm(film);
     }
 
     @GetMapping
     private Set<Film> getAllFilms() {
-        log.debug("Список всех фильмов отправлен.");
-        return new HashSet<>(films.values());
+        return filmStorage.getAllFilms();
+    }
+
+    public void deleteAllFilms() {
+        filmStorage.deleteAllFilms();
     }
 }

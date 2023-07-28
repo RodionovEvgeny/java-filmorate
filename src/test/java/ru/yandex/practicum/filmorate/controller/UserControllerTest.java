@@ -36,10 +36,12 @@ class UserControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private UserController userController;
 
     @AfterEach
     void setup() {
-        UserController.deleteAllUsers();
+        userController.deleteAllUsers();
     }
 
     @Test

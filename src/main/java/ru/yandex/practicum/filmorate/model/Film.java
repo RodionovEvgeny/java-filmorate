@@ -10,7 +10,6 @@ import java.time.LocalDate;
 
 @Data
 public class Film {
-
     @NotBlank(message = "Имя фильма не заполнено.")
     private final String name;
     @Size(min = 0, max = 200, message = "Длина описания должна быть от 0 до 200 символов.")
@@ -19,6 +18,5 @@ public class Film {
     private final int duration;
     @ValidDateFilm(message = "Дата релиза не может быть раньше создания первого фильма.")
     private final LocalDate releaseDate;
-    // @ValidFilmId(message = "Фильм с данным id не найден.")
     private int id;
 }
