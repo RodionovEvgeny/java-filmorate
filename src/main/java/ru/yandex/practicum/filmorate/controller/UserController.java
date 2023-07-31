@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping("/users")
 public class UserController {
 
     private final UserStorage userStorage;
@@ -25,18 +24,23 @@ public class UserController {
         userStorage.deleteAllUsers();
     }
 
-    @PostMapping
+    @PostMapping("/users")
     private User addUser(@Valid @RequestBody User user) {
         return userStorage.addUser(user);
     }
 
-    @PutMapping
+    @PutMapping("/users")
     private User updateUser(@Valid @RequestBody User user) {
         return userStorage.updateUser(user);
     }
 
-    @GetMapping
+    @GetMapping("/users")
     private Set<User> getAllUsers() {
         return userStorage.getAllUsers();
+    }
+
+    @GetMapping(("/users/{id}"))
+    private User getUser(@PathVariable(name = "id") Integer id) {
+        return userStorage.getUserById(id);
     }
 }

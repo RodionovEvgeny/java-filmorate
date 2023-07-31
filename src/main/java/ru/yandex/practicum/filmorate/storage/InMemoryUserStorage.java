@@ -48,4 +48,10 @@ public class InMemoryUserStorage implements UserStorage {
         users.clear();
         vacantId = 1;
     }
+
+    @Override
+    public User getUserById(Integer id) {
+        if (users.containsKey(id)) return users.get(id);
+        else throw new RuntimeException("User not found"); //TODO заменить жэкспептион на нормальный тут и у фильма
+    }
 }
