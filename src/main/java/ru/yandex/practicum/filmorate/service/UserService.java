@@ -1,18 +1,25 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+
 @Service
 public class UserService {
+    private UserStorage userStorage;
 
-    public void addToFriends(int firstUserId, int secondUserId) {
-
+    @Autowired
+    public UserService(UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
 
-    public void addToFriends(User firstUser, User secondUser) {
+    public void addToFriends(String firstUserId, String secondUserId) { // TODO добавить валидацию айдишников
+        User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
+        User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
         firstUser.getFriends().add(secondUser.getId());
         secondUser.getFriends().add(firstUser.getId());
     }

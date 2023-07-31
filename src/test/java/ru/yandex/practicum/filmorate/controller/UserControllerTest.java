@@ -93,7 +93,7 @@ class UserControllerTest {
                         get("/users")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].name").value("login"))
+                .andExpect(jsonPath("$[0].name").value("login"))
                 .andExpect(jsonPath("$", hasSize(2)));
     }
 
