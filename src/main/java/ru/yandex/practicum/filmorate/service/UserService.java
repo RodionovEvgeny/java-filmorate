@@ -24,22 +24,26 @@ public class UserService {
         secondUser.getFriends().add(firstUser.getId());
     }
 
-    public void deleteFriend(int firstUserId, int secondUserId) {
-
-    }
-
-    public void deleteFriend(User firstUser, User secondUser) {
+    public void deleteFriend(String firstUserId, String secondUserId) { // TODO добавить валидацию айдишников
+        User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
+        User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
         firstUser.getFriends().remove(secondUser.getId());
         secondUser.getFriends().remove(firstUser.getId());
     }
 
-    public Set<Integer> getMutualFriends(int firstUserId, int secondUserId) {
-        return null;
-    }
+    public Set<User> getMutualFriends(String firstUserId, String secondUserId) {
+        User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
+        User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
 
-    public Set<Integer> getMutualFriends(User firstUser, User secondUser) {
         return firstUser.getFriends().stream()
                 .filter(id -> secondUser.getFriends().contains(id))
+                .map(friendId -> userStorage.getUserById(friendId))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<User> getUsersFriends(Integer id) { // TODO добавить валидацию айдишников
+        return userStorage.getUserById(id).getFriends().stream()
+                .map(friendId -> userStorage.getUserById(friendId))
                 .collect(Collectors.toSet());
     }
 }
