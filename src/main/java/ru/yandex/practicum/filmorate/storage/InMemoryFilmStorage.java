@@ -47,4 +47,10 @@ public class InMemoryFilmStorage implements FilmStorage {
         films.clear();
         nextVacantId = 1;
     }
+
+    @Override
+    public Film getFilmById(Integer id) {
+        if (films.containsKey(id)) return films.get(id);
+        else throw new RuntimeException("Film bot found");
+    }
 }

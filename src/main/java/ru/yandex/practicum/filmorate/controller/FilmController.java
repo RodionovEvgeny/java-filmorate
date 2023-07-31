@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Slf4j
 @RestController
-@RequestMapping("/films")
 public class FilmController {
     private final FilmStorage filmStorage;
 
@@ -20,19 +19,24 @@ public class FilmController {
         this.filmStorage = filmStorage;
     }
 
-    @PostMapping
+    @PostMapping("/films")
     private Film addFilm(@Valid @RequestBody Film film) {
         return filmStorage.addFilm(film);
     }
 
-    @PutMapping
+    @PutMapping("/films")
     private Film updateFilm(@Valid @RequestBody Film film) {
         return filmStorage.updateFilm(film);
     }
 
-    @GetMapping
-    private Set<Film> getAllFilms() {
+    @GetMapping("/films")
+    private Set<Film> getFilms(@PathVariable(name = "id", required = false) Integer id) {
         return filmStorage.getAllFilms();
+    }
+
+    @GetMapping("/films/{id}")
+    private Film getFilm(@PathVariable(name = "id") Integer id) {
+        return filmStorage.getFilmById(id);
     }
 
     public void deleteAllFilms() {

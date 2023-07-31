@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 import java.util.Set;
 
 @Data
-@AllArgsConstructor
 public class User {
 
     @Email(message = "Введен некорректный email.")
@@ -22,4 +20,13 @@ public class User {
     private int id;
     private String name;
     private Set<Integer> friends;
+
+
+    public User(String email, String login, LocalDate birthday, int id, String name) {
+        this.email = email;
+        this.login = login;
+        this.birthday = birthday;
+        this.id = id;
+        this.name = name;
+    }
 }
