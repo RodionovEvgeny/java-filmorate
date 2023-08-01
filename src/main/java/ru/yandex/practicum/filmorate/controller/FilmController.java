@@ -38,6 +38,7 @@ public class FilmController {
     private void addLike(@PathVariable Map<String, String> ids) {
         filmService.addLike(ids.get("id"), ids.get("userId"));
     }
+
     @DeleteMapping("/films/{id}/like/{userId}")
     private void deleteLike(@PathVariable Map<String, String> ids) {
         filmService.deleteLike(ids.get("id"), ids.get("userId"));
@@ -47,6 +48,7 @@ public class FilmController {
     private Set<Film> getFilms(@PathVariable(name = "id", required = false) Integer id) {
         return filmStorage.getAllFilms();
     }
+
     @GetMapping("/films/popular")
     private List<Film> getTopFilms(@RequestParam(required = false) Integer count) {
         return filmService.getTopFilms(count);
