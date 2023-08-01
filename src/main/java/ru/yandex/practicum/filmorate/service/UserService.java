@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,6 @@ public class UserService {
     public Set<User> getUsersFriends(Integer id) {
         return userStorage.getUserById(id).getFriends().stream()
                 .map(friendId -> userStorage.getUserById(friendId))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
