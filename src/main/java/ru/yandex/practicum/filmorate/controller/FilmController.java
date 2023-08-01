@@ -48,7 +48,7 @@ public class FilmController {
         return filmStorage.getAllFilms();
     }
     @GetMapping("/films/popular")
-    private List<Film> getTopFilms(@RequestParam Integer count) {
+    private List<Film> getTopFilms(@RequestParam(required = false) Integer count) {
         return filmService.getTopFilms(count);
     }
 
