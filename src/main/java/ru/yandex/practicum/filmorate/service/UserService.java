@@ -17,14 +17,14 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public void addToFriends(String firstUserId, String secondUserId) { // TODO добавить валидацию айдишников
+    public void addToFriends(String firstUserId, String secondUserId) {
         User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
         User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
         firstUser.getFriends().add(secondUser.getId());
         secondUser.getFriends().add(firstUser.getId());
     }
 
-    public void deleteFriend(String firstUserId, String secondUserId) { // TODO добавить валидацию айдишников
+    public void deleteFriend(String firstUserId, String secondUserId) {
         User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
         User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
         firstUser.getFriends().remove(secondUser.getId());
@@ -41,7 +41,7 @@ public class UserService {
                 .collect(Collectors.toSet());
     }
 
-    public Set<User> getUsersFriends(Integer id) { // TODO добавить валидацию айдишников
+    public Set<User> getUsersFriends(Integer id) {
         return userStorage.getUserById(id).getFriends().stream()
                 .map(friendId -> userStorage.getUserById(friendId))
                 .collect(Collectors.toSet());

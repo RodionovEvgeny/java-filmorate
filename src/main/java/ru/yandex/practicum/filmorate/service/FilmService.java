@@ -21,7 +21,7 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    public void addLike(String filmId, String userId) { // TODO валидация айдишек
+    public void addLike(String filmId, String userId) {
         Film film = filmStorage.getFilmById(Integer.valueOf(filmId));
         User user = userStorage.getUserById(Integer.valueOf(userId));
         film.getLikes().add(user.getId());
