@@ -20,7 +20,7 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public Film addFilm(Film film) {
         if (film.getId() == 0)
-            film.setId(nextVacantId++); // TODO если передать фильм с айди то он обновит фильм а не добавит новый. Это баг или фича?
+            film.setId(nextVacantId++);
         films.put(film.getId(), film);
         log.debug("Фильм добавлен. Текущее количество фильмов {}", films.size());
         return film;

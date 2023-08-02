@@ -30,7 +30,7 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String, String> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-
+        // достаём короткое сообщение об ошибке из полного текста ошибки:
         int stringFirstIndex = e.getMessage().lastIndexOf(" default message") + 18;
         int stringLastIndex = e.getMessage().length() - 3;
         String message = e.getMessage().substring(stringFirstIndex, stringLastIndex);

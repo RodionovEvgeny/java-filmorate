@@ -11,7 +11,6 @@ import java.util.Set;
 
 @Data
 public class User {
-
     @Email(message = "Введен некорректный email.")
     private final String email;
     @NotEmpty(message = "Введен пустой логин.")
@@ -21,7 +20,6 @@ public class User {
     private int id;
     private String name;
     private Set<Integer> friends = new HashSet<>();
-
 
     public User(String email, String login, LocalDate birthday, int id, String name) {
         this.email = email;
