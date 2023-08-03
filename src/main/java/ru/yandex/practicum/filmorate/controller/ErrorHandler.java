@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
-
-import java.util.Map;
+import ru.yandex.practicum.filmorate.model.ExceptionDTO;
 
 @RestControllerAdvice
 @Slf4j
@@ -17,24 +16,20 @@ public class ErrorHandler {
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleNotFoundException(final NotFoundException e) {
-        return Map.of("Ошибка!", e.getMessage());
+    public ExceptionDTO handleNotFoundException(final NotFoundException e) {
+        return new ExceptionDTO(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    public Map<String, String> handleValidationException(final ValidationException e) {
-        return Map.of("Ошибка!", e.getMessage());
+    public ExceptionDTO handleValidationException(final ValidationException e) {
+        return new ExceptionDTO(e.getMessage());
     }
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public Map<String, String> handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
-        // достаём короткое сообщение об ошибке из полного текста ошибки:
-        int stringFirstIndex = e.getMessage().lastIndexOf(" default message") + 18;
-        int stringLastIndex = e.getMessage().length() - 3;
-        String message = e.getMessage().substring(stringFirstIndex, stringLastIndex);
-        log.warn(message);
-        return Map.of("Ошибка!", message);
+    public ExceptionDTO handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        log.warn(e.getMessage());
+        return new ExceptionDTO(e.getMessage());
     }
 }
