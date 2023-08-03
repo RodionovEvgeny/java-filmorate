@@ -44,12 +44,12 @@ public class FilmController {
     }
 
     @GetMapping
-    private Set<Film> getFilms(@PathVariable(name = "id", required = false) Integer id) {
+    private Set<Film> getFilms() {
         return filmStorage.getAllFilms();
     }
 
     @GetMapping("/popular")
-    private List<Film> getTopFilms(@RequestParam(required = false) Integer count) {
+    private List<Film> getTopFilms(@RequestParam(defaultValue = "10") Integer count) {
         return filmService.getTopFilms(count);
     }
 
@@ -58,6 +58,7 @@ public class FilmController {
         return filmStorage.getFilmById(id);
     }
 
+    @DeleteMapping
     public void deleteAllFilms() {
         filmStorage.deleteAllFilms();
     }

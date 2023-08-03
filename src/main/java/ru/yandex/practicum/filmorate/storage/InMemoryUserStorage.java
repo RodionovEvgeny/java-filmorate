@@ -6,10 +6,7 @@ import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -41,7 +38,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public Set<User> getAllUsers() {
         log.debug("Список всех зарегестрированных пользователей отправлен.");
-        return new HashSet<>(users.values());
+        return new LinkedHashSet<>(users.values());
     }
 
     @Override

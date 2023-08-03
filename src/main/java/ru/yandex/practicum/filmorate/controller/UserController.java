@@ -22,6 +22,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @DeleteMapping
     public void deleteAllUsers() {
         userStorage.deleteAllUsers();
     }
