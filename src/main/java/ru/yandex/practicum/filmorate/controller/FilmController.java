@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
@@ -14,47 +13,47 @@ import java.util.Set;
 
 @Slf4j
 @RestController
+@RequestMapping("/films")
 public class FilmController {
     private final FilmStorage filmStorage;
     private final FilmService filmService;
 
-    @Autowired
     public FilmController(FilmStorage filmStorage, FilmService filmService) {
         this.filmStorage = filmStorage;
         this.filmService = filmService;
     }
 
-    @PostMapping("/films")
+    @PostMapping
     private Film addFilm(@Valid @RequestBody Film film) {
         return filmStorage.addFilm(film);
     }
 
-    @PutMapping("/films")
+    @PutMapping
     private Film updateFilm(@Valid @RequestBody Film film) {
         return filmStorage.updateFilm(film);
     }
 
-    @PutMapping("/films/{id}/like/{userId}")
+    @PutMapping("/{id}/like/{userId}")
     private void addLike(@PathVariable Map<String, String> ids) {
         filmService.addLike(ids.get("id"), ids.get("userId"));
     }
 
-    @DeleteMapping("/films/{id}/like/{userId}")
+    @DeleteMapping("/{id}/like/{userId}")
     private void deleteLike(@PathVariable Map<String, String> ids) {
         filmService.deleteLike(ids.get("id"), ids.get("userId"));
     }
 
-    @GetMapping("/films")
+    @GetMapping
     private Set<Film> getFilms(@PathVariable(name = "id", required = false) Integer id) {
         return filmStorage.getAllFilms();
     }
 
-    @GetMapping("/films/popular")
+    @GetMapping("/popular")
     private List<Film> getTopFilms(@RequestParam(required = false) Integer count) {
         return filmService.getTopFilms(count);
     }
 
-    @GetMapping("/films/{id}")
+    @GetMapping("/{id}")
     private Film getFilm(@PathVariable(name = "id") Integer id) {
         return filmStorage.getFilmById(id);
     }
