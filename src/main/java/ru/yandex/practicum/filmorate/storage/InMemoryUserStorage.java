@@ -38,7 +38,7 @@ public class InMemoryUserStorage implements UserStorage {
     @Override
     public Set<User> getAllUsers() {
         log.debug("Список всех зарегестрированных пользователей отправлен.");
-        return new LinkedHashSet<>(users.values());
+        return new HashSet<>(users.values());
     }
 
     @Override

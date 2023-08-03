@@ -93,8 +93,21 @@ class UserControllerTest {
                         get("/users")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[1].name").value("login"))
                 .andExpect(jsonPath("$", hasSize(2)));
+    }
+
+    @Test
+    void hasToSetLoginAsNameToNoNameUser() throws Exception {
+        mockMvc.perform(
+                post("/users")
+                        .content(objectMapper.writeValueAsString(noNameUser))
+                        .contentType(MediaType.APPLICATION_JSON));
+        mockMvc.perform(
+                        get("/users")
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].name").value("login"))
+                .andExpect(jsonPath("$", hasSize(1)));
     }
 
     @Test
