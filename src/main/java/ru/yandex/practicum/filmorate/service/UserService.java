@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService {
-    private UserStorage userStorage;
+    private final UserStorage userStorage;
 
     public UserService(UserStorage userStorage) {
         this.userStorage = userStorage;
@@ -36,13 +36,13 @@ public class UserService {
 
         return firstUser.getFriends().stream()
                 .filter(id -> secondUser.getFriends().contains(id))
-                .map(friendId -> userStorage.getUserById(friendId))
+                .map(userStorage::getUserById)
                 .collect(Collectors.toSet());
     }
 
     public Set<User> getUsersFriends(Integer id) {
         return userStorage.getUserById(id).getFriends().stream()
-                .map(friendId -> userStorage.getUserById(friendId))
+                .map(userStorage::getUserById)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
     }
 }
