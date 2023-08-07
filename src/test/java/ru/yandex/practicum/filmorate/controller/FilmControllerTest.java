@@ -43,10 +43,12 @@ class FilmControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private FilmController filmController;
 
     @BeforeEach
     void setup() {
-        FilmController.deleteAllFilms();
+        filmController.deleteAllFilms();
     }
 
     @Test
