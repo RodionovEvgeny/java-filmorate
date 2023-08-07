@@ -16,23 +16,23 @@ public class UserService {
         this.userStorage = userStorage;
     }
 
-    public void addToFriends(String firstUserId, String secondUserId) {
-        User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
-        User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
+    public void addToFriends(Integer firstUserId, Integer secondUserId) {
+        User firstUser = userStorage.getUserById(firstUserId);
+        User secondUser = userStorage.getUserById(secondUserId);
         firstUser.getFriends().add(secondUser.getId());
         secondUser.getFriends().add(firstUser.getId());
     }
 
-    public void deleteFriend(String firstUserId, String secondUserId) {
-        User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
-        User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
+    public void deleteFriend(Integer firstUserId, Integer secondUserId) {
+        User firstUser = userStorage.getUserById(firstUserId);
+        User secondUser = userStorage.getUserById(secondUserId);
         firstUser.getFriends().remove(secondUser.getId());
         secondUser.getFriends().remove(firstUser.getId());
     }
 
-    public Set<User> getMutualFriends(String firstUserId, String secondUserId) {
-        User firstUser = userStorage.getUserById(Integer.valueOf(firstUserId));
-        User secondUser = userStorage.getUserById(Integer.valueOf(secondUserId));
+    public Set<User> getMutualFriends(Integer firstUserId, Integer secondUserId) {
+        User firstUser = userStorage.getUserById(firstUserId);
+        User secondUser = userStorage.getUserById(secondUserId);
 
         return firstUser.getFriends().stream()
                 .filter(id -> secondUser.getFriends().contains(id))

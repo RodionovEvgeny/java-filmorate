@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -34,13 +33,15 @@ public class FilmController {
     }
 
     @PutMapping("/{id}/like/{userId}")
-    private void addLike(@PathVariable Map<String, String> ids) {
-        filmService.addLike(ids.get("id"), ids.get("userId"));
+    private void addLike(@PathVariable(name = "id") Integer id,
+                         @PathVariable(name = "userId") Integer userId) {
+        filmService.addLike(id, userId);
     }
 
     @DeleteMapping("/{id}/like/{userId}")
-    private void deleteLike(@PathVariable Map<String, String> ids) {
-        filmService.deleteLike(ids.get("id"), ids.get("userId"));
+    private void deleteLike(@PathVariable(name = "id") Integer id,
+                            @PathVariable(name = "userId") Integer userId) {
+        filmService.deleteLike(id, userId);
     }
 
     @GetMapping

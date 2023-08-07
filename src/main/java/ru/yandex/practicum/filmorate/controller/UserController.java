@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.Valid;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
@@ -53,17 +52,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    private Set<User> getMutualFriends(@PathVariable Map<String, String> ids) {
-        return userService.getMutualFriends(ids.get("id"), ids.get("otherId"));
+    private Set<User> getMutualFriends(@PathVariable(name = "id") Integer id,
+                                       @PathVariable(name = "otherId") Integer otherId) {
+        return userService.getMutualFriends(id, otherId);
     }
 
     @PutMapping("/{id}/friends/{friendId}")
-    private void addToFriends(@PathVariable Map<String, String> ids) {
-        userService.addToFriends(ids.get("id"), ids.get("friendId"));
+    private void addToFriends(@PathVariable(name = "id") Integer id,
+                              @PathVariable(name = "friendId") Integer friendId) {
+        userService.addToFriends(id, friendId);
     }
 
     @DeleteMapping("/{id}/friends/{friendId}")
-    private void deleteFriends(@PathVariable Map<String, String> ids) {
-        userService.deleteFriend(ids.get("id"), ids.get("friendId"));
+    private void deleteFriends(@PathVariable(name = "id") Integer id,
+                               @PathVariable(name = "friendId") Integer friendId) {
+        userService.deleteFriend(id, friendId);
     }
 }

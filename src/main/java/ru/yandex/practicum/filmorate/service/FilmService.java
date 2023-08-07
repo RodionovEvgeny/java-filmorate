@@ -19,15 +19,15 @@ public class FilmService {
         this.userStorage = userStorage;
     }
 
-    public void addLike(String filmId, String userId) {
-        Film film = filmStorage.getFilmById(Integer.valueOf(filmId));
-        User user = userStorage.getUserById(Integer.valueOf(userId));
+    public void addLike(Integer filmId, Integer userId) {
+        Film film = filmStorage.getFilmById(filmId);
+        User user = userStorage.getUserById(userId);
         film.getLikes().add(user.getId());
     }
 
-    public void deleteLike(String filmId, String userId) {
-        Film film = filmStorage.getFilmById(Integer.valueOf(filmId));
-        User user = userStorage.getUserById(Integer.valueOf(userId));
+    public void deleteLike(Integer filmId, Integer userId) {
+        Film film = filmStorage.getFilmById(filmId);
+        User user = userStorage.getUserById(userId);
         film.getLikes().remove(user.getId());
     }
 
