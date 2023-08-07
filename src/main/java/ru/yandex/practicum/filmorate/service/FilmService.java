@@ -32,7 +32,6 @@ public class FilmService {
     }
 
     public List<Film> getTopFilms(Integer count) {
-        if (count == null) count = 10;
         return filmStorage.getAllFilms().stream()
                 .sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size())
                 .limit(count)
