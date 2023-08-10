@@ -22,4 +22,6 @@ public class Film {
     private final LocalDate releaseDate;
     private int id;
     private Set<Integer> likes = new HashSet<>();
+    private Set<FilmGenres> genre;
+    private FilmRating filmRating;
 }
