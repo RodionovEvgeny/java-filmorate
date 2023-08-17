@@ -11,18 +11,14 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 @Slf4j
 @Component("dbUserStorage")
 @Primary
 public class DbUserStorage implements UserStorage {
-    private final Map<Integer, User> users = new HashMap<>();
     private final JdbcTemplate jdbcTemplate;
-    private int vacantId = 1;
 
     public DbUserStorage(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
@@ -30,7 +26,6 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User addUser(User user) {
-        if (user.getId() == 0) user.setId(vacantId++);
         if (user.getName() == null || user.getName().isEmpty())
             user.setName(user.getLogin());
 
@@ -89,8 +84,8 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public void deleteAllUsers() {
-        users.clear();
-        vacantId = 1;
+        String sqlQuery = "delete from \"User\"";
+        jdbcTemplate.update(sqlQuery); // TODO сделать бы так, чтобы после удаления всех пользователей id с 1 опять шли
     }
 
     @Override
