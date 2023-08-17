@@ -6,13 +6,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -57,13 +55,27 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User updateUser(User user) {
-        if (!(user.getId() == 0 || users.containsKey(user.getId()))) {
+
+        String sqlQuery = "update \"User\" set " +
+                "\"Name\" = ?, \"Login\" = ?, \"Email\" = ?, \"Birthday\" = ? " +
+                "where \"User_id\" = ?";
+        jdbcTemplate.update(sqlQuery
+                , user.getName()
+                , user.getLogin()
+                , user.getEmail()
+                , user.getBirthday()
+                , user.getId());
+        return getUserById(user.getId());
+
+
+
+        /*if (!(user.getId() == 0 || users.containsKey(user.getId()))) {
             log.warn("Пользователь с id = {} не найден.", user.getId());
             throw new ValidationException("Пользователь с такиим id не найден.");
         }
         users.put(user.getId(), user);
         log.debug("Данные пользователя {} обновлены.", user.getLogin());
-        return user;
+        return user;*/
     }
 
     @Override
