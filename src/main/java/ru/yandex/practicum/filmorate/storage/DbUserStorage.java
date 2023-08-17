@@ -68,8 +68,11 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public Set<User> getAllUsers() {
-        log.debug("Список всех зарегестрированных пользователей отправлен.");
-        return new HashSet<>(users.values());
+        String sqlQuery = "select * from \"User\"";
+        return new HashSet<>(jdbcTemplate.query(sqlQuery, this::mapRowToUser));
+        /*log.debug("Список всех зарегестрированных пользователей отправлен.");
+        return new HashSet<>(users.values());*/
+
     }
 
     @Override
@@ -84,11 +87,6 @@ public class DbUserStorage implements UserStorage {
         String sqlQuery = "select * " +
                 "from \"User\" where \"User_id\" = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
-
-
-
-
-
         /*if (users.containsKey(id)) return users.get(id);
         else {
             log.warn(String.format("Пользователь с id %s не найден.", id));
