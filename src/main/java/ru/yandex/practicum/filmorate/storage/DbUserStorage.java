@@ -3,16 +3,20 @@ package ru.yandex.practicum.filmorate.storage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
-import java.util.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 @Component("dbUserStorage")
@@ -36,7 +40,7 @@ public class DbUserStorage implements UserStorage {
         jdbcTemplate.update(connection -> {
             PreparedStatement stmt = connection.prepareStatement(
                     "INSERT INTO \"User\" ( \"Name\" , \"Login\" , \"Email\", \"Birthday\") " +
-                    "VALUES (?, ?, ?, ?);", new String[]{"User_id"});
+                            "VALUES (?, ?, ?, ?);", new String[]{"User_id"});
             stmt.setString(1, user.getName());
             stmt.setString(2, user.getLogin());
             stmt.setString(3, user.getEmail());
@@ -46,13 +50,6 @@ public class DbUserStorage implements UserStorage {
 
         int newId = keyHolder.getKey().intValue();
         user.setId(newId);
-        /*jdbcTemplate.update("INSERT INTO \"User\" ( \"Name\" , \"Login\" , \"Email\", \"Birthday\") " +
-                        "VALUES (?, ?, ?, ?);",
-                user.getName(),
-                user.getLogin(),
-                user.getEmail(),
-                user.getBirthday()
-        );*/
 
         log.debug("Пользователь добавлен.");
         return user;
@@ -83,10 +80,29 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User getUserById(Integer id) {
-        if (users.containsKey(id)) return users.get(id);
+
+        String sqlQuery = "select * " +
+                "from \"User\" where \"User_id\" = ?";
+        return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
+
+
+
+
+
+        /*if (users.containsKey(id)) return users.get(id);
         else {
             log.warn(String.format("Пользователь с id %s не найден.", id));
             throw new UserNotFoundException(String.format("Пользователь с id %s не найден.", id));
-        }
+        }*/
     }
+
+    private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
+        return new User(
+                resultSet.getString("Email"),
+                (resultSet.getString("Login")),
+                ((resultSet.getDate("Birthday"))).toLocalDate(),
+                (resultSet.getInt("User_id")),
+                (resultSet.getString("Name")));
+    }
+
 }
