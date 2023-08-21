@@ -16,8 +16,8 @@ CREATE TABLE  IF NOT EXISTS "Film" (
     "Description" varchar   NOT NULL,
     "Duration" int   NOT NULL,
     "Release_date" timestamp   NOT NULL,
-    "Rating_id" integer NOT NULL,
-    "Genre_id" integer   NOT NULL,
+    "Rating_id" integer   NULL,
+    "Genre_id" integer   NULL,
     CONSTRAINT "pk_Film" PRIMARY KEY (
         "Film_id"
      )

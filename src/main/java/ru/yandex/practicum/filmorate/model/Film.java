@@ -24,4 +24,23 @@ public class Film {
     private Set<Integer> likes = new HashSet<>();
     private Set<FilmGenres> genre;
     private FilmRating filmRating;
+
+    public int getFilmRatingId() {
+        if (filmRating == null) return 6;
+        switch (filmRating) {
+            case G:
+                return 1;
+            case PG:
+                return 2;
+            case PG13:
+                return 3;
+            case R:
+                return 4;
+            case NC17:
+                return 5;
+            default:
+                return 6;
+        }
+    }
+
 }

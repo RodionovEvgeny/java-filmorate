@@ -5,5 +5,6 @@ public enum FilmRating {
     PG,
     PG13,
     R,
-    NC17
+    NC17,
+    NOT_STATED
 }
