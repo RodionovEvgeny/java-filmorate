@@ -2,10 +2,13 @@ package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Primary;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
@@ -90,15 +93,13 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User getUserById(Integer id) {
-
+        try {
         String sqlQuery = "select * " +
                 "from \"User\" where \"User_id\" = ?";
         return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
-        /*if (users.containsKey(id)) return users.get(id);
-        else {
-            log.warn(String.format("Пользователь с id %s не найден.", id));
+        } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException(String.format("Пользователь с id %s не найден.", id));
-        }*/
+        }
     }
 
     private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
