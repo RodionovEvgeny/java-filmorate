@@ -49,6 +49,8 @@ public class DbFilmStorage implements FilmStorage {
             stmt.setInt(5, film.getMpa().getId());
             return stmt;
         }, keyHolder);
+        int newId = keyHolder.getKey().intValue();
+        film.setId(newId);
 
         if (film.getGenres() != null && !film.getGenres().isEmpty()) {
             for (Genre genre : film.getGenres()) {
@@ -58,8 +60,6 @@ public class DbFilmStorage implements FilmStorage {
             }
         }
 
-        int newId = keyHolder.getKey().intValue();
-        film.setId(newId);
 
         log.debug("Фильм добавлен.");
         return film;
@@ -95,9 +95,9 @@ public class DbFilmStorage implements FilmStorage {
     public Set<Film> getAllFilms() {
         String sqlQuery = "SELECT * FROM \"Film\" AS f JOIN \"Rating\" AS r ON f.\"Rating_id\"=r.\"Rating_id\"";
         List<Film> films = jdbcTemplate.query(sqlQuery, this::mapRowToFilm);
-        for (Film film : films) {
-            film.setGenres(getFilmsGenresById(film.getId()));
-        }
+        //for (Film film : films) {
+        //    film.setGenres(getFilmsGenresById(film.getId()));
+        // }
         return new HashSet<>(films);
     }
 
@@ -114,14 +114,44 @@ public class DbFilmStorage implements FilmStorage {
                     "FROM \"Film\" AS f " +
                     "JOIN \"Rating\" AS r ON f.\"Rating_id\"=r.\"Rating_id\" " +
                     "WHERE \"Film_id\" = ?";
-            Film film = jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, id); // todo жанры прикрутить
+            Film film = jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, id);
 
-            film.setGenres(getFilmsGenresById(id));
+            //film.setGenres(getFilmsGenresById(id));
 
             return film;
         } catch (EmptyResultDataAccessException e) {
             throw new FilmNotFoundException(String.format("Фильм с id %s не найден.", id));
         }
+    }
+
+    @Override
+    public void addLike(Integer filmId, Integer userId) {
+        try {
+            jdbcTemplate.update("INSERT INTO  \"Likes\" (\"Film_id\", \"User_id\") VALUES (?,?)", filmId, userId);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Ororor");// TODO Сделать нормальное исключение или удалить его вовсе
+        }
+
+    }
+
+    @Override
+    public void deleteLike(Integer filmId, Integer userId) {
+        jdbcTemplate.update("DELETE FROM  \"Likes\" WHERE \"Film_id\" = ? AND \"User_id\" = ?", filmId, userId);
+    }
+
+    @Override
+    public List<Film> getTopFilms(Integer count) {
+        String sqlQuery = "SELECT * " +
+                "FROM \"Film\" AS f " +
+                "JOIN \"Rating\" AS r ON f.\"Rating_id\"=r.\"Rating_id\" " +
+                "LEFT JOIN " +
+                "(SELECT \"Film_id\", COUNT(\"User_id\") as ct FROM \"Likes\" GROUP BY \"Film_id\" ORDER BY ct) " +
+                "AS fc ON fc.\"Film_id\" = f.\"Film_id\" " +
+                "ORDER BY fc.ct " +
+                "LIMIT ?";
+        List<Film> films = jdbcTemplate.query(sqlQuery, this::mapRowToFilm, count);
+
+        return films;
     }
 
     private Set<Genre> getFilmsGenresById(int filmId) {
@@ -146,6 +176,9 @@ public class DbFilmStorage implements FilmStorage {
                 ((resultSet.getDate("Release_date"))).toLocalDate());
         film.setMpa(new Mpa(resultSet.getInt("Rating_id"), resultSet.getString("Rating_name")));
         film.setId(resultSet.getInt("Film_id"));
+        film.setGenres(getFilmsGenresById(film.getId()));
         return film;
     }
+
+
 }

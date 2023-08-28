@@ -24,7 +24,10 @@ CREATE TABLE IF NOT EXISTS "Film" (
 
 CREATE TABLE IF NOT EXISTS "Likes" (
     "Film_id" integer   NOT NULL,
-    "User_id" integer   NOT NULL
+    "User_id" integer   NOT NULL,
+     CONSTRAINT "pk_Likes" PRIMARY KEY (
+        "Film_id","User_id"
+     )
 );
 
 CREATE TABLE IF NOT EXISTS "Friends" (
