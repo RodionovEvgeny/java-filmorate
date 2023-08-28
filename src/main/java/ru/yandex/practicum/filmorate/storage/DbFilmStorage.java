@@ -8,11 +8,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -111,7 +109,7 @@ public class DbFilmStorage implements FilmStorage {
                 (resultSet.getString("Description")),
                 (resultSet.getInt("Duration")),
                 ((resultSet.getDate("Release_date"))).toLocalDate());
-        film.setFilmRating(Film.getFilmRatingById(resultSet.getInt("Rating_id")));
+        film.setMpa(new Mpa(resultSet.getInt("Rating_id"),resultSet.getString("Rating_name")));
         film.setId(resultSet.getInt("Film_id"));
                 return film;
     }

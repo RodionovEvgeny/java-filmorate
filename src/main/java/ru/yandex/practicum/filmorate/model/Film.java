@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
-import org.springframework.context.annotation.Primary;
 import ru.yandex.practicum.filmorate.validation.ValidDateFilm;
 
 import javax.validation.constraints.NotBlank;
@@ -24,24 +23,11 @@ public class Film {
     private int id;
     private Set<Integer> likes = new HashSet<>();
     private Set<FilmGenres> genre;
-    private FilmRating filmRating;
+    private Mpa mpa;
 
     public int getFilmRatingId() {
-        if (filmRating == null) return 6;
-        switch (filmRating) {
-            case G:
-                return 1;
-            case PG:
-                return 2;
-            case PG13:
-                return 3;
-            case R:
-                return 4;
-            case NC17:
-                return 5;
-            default:
-                return 6;
-        }
+        if (mpa == null) return 6;
+       return mpa.getId();
     }
 
     public static FilmRating getFilmRatingById(int id){

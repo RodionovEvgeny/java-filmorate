@@ -31,7 +31,7 @@ public class DbMpaStorage implements MpaStorage {
         SqlRowSet rows = jdbcTemplate.queryForRowSet("select * from \"Rating\" where \"Rating_id\" = ?", id);
 
         if (rows.next()) {
-            return new Mpa(rows.getInt("Rating_id"), FilmRating.valueOf(rows.getString("Rating_name")));
+            return new Mpa(rows.getInt("Rating_id"), rows.getString("Rating_name"));
         } else {
             throw new MpaNotFoundException(String.format("Рейтинг с id %s не найден.", id));
         }
@@ -40,6 +40,6 @@ public class DbMpaStorage implements MpaStorage {
     private Mpa createMpa(ResultSet resultSet, int rowNum) throws SQLException {
         return new Mpa(
                 resultSet.getInt("Rating_id"),
-                FilmRating.valueOf(resultSet.getString("Rating_name")));
+                resultSet.getString("Rating_name"));
     }
 }

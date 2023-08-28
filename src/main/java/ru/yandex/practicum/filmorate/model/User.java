@@ -22,7 +22,6 @@ public class User {
     private final LocalDate birthday;
     private int id;
     private String name;
-    private Set<Integer> friends = new HashSet<>();
 
     public User(String email, String login, LocalDate birthday, int id, String name) {
         this.email = email;
@@ -30,16 +29,5 @@ public class User {
         this.birthday = birthday;
         this.id = id;
         this.name = name;
-    }
-
-    public Map<String,Object> toMap() {
-        Map<String, Object> values = new HashMap<>();
-        values.put("User_id", id);
-        values.put("Name", name);
-        values.put("Login", login);
-        values.put("Email", email);
-        values.put("Birthday", birthday);
-        return values;
-
     }
 }

@@ -21,12 +21,12 @@ public class MpaController { // TODO логирование сделать че�
     }
 
     @GetMapping
-    private List<Mpa> getAllUsers() {
+    private List<Mpa> getAllMpa() {
         return mpaService.getAllMpa();
     }
 
     @GetMapping("/{id}")
-    private Mpa getUser(@PathVariable(name = "id") Integer id) { // TODO посмотреть, мб можно дефолтное значение для вариаблы сделать
+    private Mpa getMpaById(@PathVariable(name = "id") Integer id) { // TODO посмотреть, мб можно дефолтное значение для вариаблы сделать
         return mpaService.getMpaById(id);
     }
 }

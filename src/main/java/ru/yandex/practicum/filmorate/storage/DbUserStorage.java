@@ -6,15 +6,17 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -94,9 +96,9 @@ public class DbUserStorage implements UserStorage {
     @Override
     public User getUserById(Integer id) {
         try {
-        String sqlQuery = "select * " +
-                "from \"User\" where \"User_id\" = ?";
-        return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
+            String sqlQuery = "select * " +
+                    "from \"User\" where \"User_id\" = ?";
+            return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
         } catch (EmptyResultDataAccessException e) {
             throw new UserNotFoundException(String.format("Пользователь с id %s не найден.", id));
         }
@@ -111,4 +113,110 @@ public class DbUserStorage implements UserStorage {
                 (resultSet.getString("Name")));
     }
 
+    @Override
+    public void addFriends(int firstUserId, int secondUserId) { // TODO базово работает. Но надо проверку на наличие пользователя делать
+
+        SqlRowSet row = jdbcTemplate.queryForRowSet(
+                "SELECT * FROM \"Friends\" WHERE \"User_id\" = ? AND \"Friend_id\" = ?",
+                firstUserId,
+                secondUserId
+        );
+        if (row.next()) {
+            throw new RuntimeException(String.format( // TODO new exception for friendship
+                    "Пользователь с id %s уже добавлен в друзья к пользователю с id %s",
+                    firstUserId,
+                    secondUserId
+            ));
+        }
+
+        row = jdbcTemplate.queryForRowSet(
+                "SELECT * FROM \"Friends\" WHERE \"User_id\" = ? AND \"Friend_id\" = ?",
+                secondUserId,
+                firstUserId
+        );
+
+        if (row.next()) {
+            jdbcTemplate.update(
+                    "INSERT INTO \"Friends\" (\"User_id\", \"Friend_id\", \"Approved\" ) VALUES (?, ?, ?)",
+                    firstUserId,
+                    secondUserId,
+                    true
+            );
+            jdbcTemplate.update(
+                    "UPDATE \"Friends\" SET  \"Approved\" = ?  WHERE \"User_id\" = ? AND \"Friend_id\" = ?",
+                    true,
+                    secondUserId,
+                    firstUserId
+            );
+            return;
+        }
+
+        jdbcTemplate.update(
+                "INSERT INTO \"Friends\" (\"User_id\", \"Friend_id\", \"Approved\" ) VALUES (?, ?, ?)",
+                firstUserId,
+                secondUserId,
+                false
+        );
+    }
+
+    @Override
+    public List<User> getUsersFriends(int userId) {
+        List<User> friends = new ArrayList<>();
+        SqlRowSet row = jdbcTemplate.queryForRowSet(
+                "SELECT u.\"User_id\" ,u.\"Name\" ,u.\"Login\" ,u.\"Email\" ,u.\"Birthday\" \n" +
+                        "FROM \"Friends\" as f\n" +
+                        "JOIN \"User\" as u on u.\"User_id\" = f.\"Friend_id\"\n" +
+                        "WHERE f.\"User_id\" = ?", userId);
+        while (row.next()) {
+            User user = new User(
+                    row.getString("Email"),
+                    (row.getString("Login")),
+                    ((row.getDate("Birthday"))).toLocalDate(),
+                    (row.getInt("User_id")),
+                    (row.getString("Name")));
+            friends.add(user);
+        }
+        return friends;
+    }
+
+    @Override
+    public List<User> getMutualFriends(Integer firstUserId, Integer secondUserId) {
+
+        List<User> friends = new ArrayList<>();
+        SqlRowSet row = jdbcTemplate.queryForRowSet(
+                "SELECT u.\"User_id\" ,u.\"Name\" ,u.\"Login\" ,u.\"Email\" ,u.\"Birthday\"\n" +
+                        "FROM \"Friends\" as f\n" +
+                        "JOIN \"User\" as u on u.\"User_id\" = f.\"Friend_id\"\n" +
+                        "WHERE f.\"User_id\" = ? AND f.\"Friend_id\" IN (\n" +
+                        "SELECT \"Friend_id\"\n" +
+                        "FROM \"Friends\"\n" +
+                        "WHERE \"User_id\" = ?\n" +
+                        ")",
+                firstUserId, secondUserId);
+
+        while (row.next()) {
+            User user = new User(
+                    row.getString("Email"),
+                    (row.getString("Login")),
+                    ((row.getDate("Birthday"))).toLocalDate(),
+                    (row.getInt("User_id")),
+                    (row.getString("Name")));
+            friends.add(user);
+        }
+        return friends;
+    }
+
+    @Override
+    public void deleteFriend(Integer firstUserId, Integer secondUserId) {
+        jdbcTemplate.update(
+                "DELETE FROM \"Friends\"  WHERE \"User_id\" = ? AND \"Friend_id\" = ?",
+                firstUserId,
+                secondUserId);
+        jdbcTemplate.update(
+                "UPDATE \"Friends\" SET  \"Approved\" = ?  WHERE \"User_id\" = ? AND \"Friend_id\" = ?",
+                false,
+                secondUserId,
+                firstUserId
+        );
+    }
 }

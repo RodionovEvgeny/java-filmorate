@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class Mpa {
     int id;
-    FilmRating filmRating;
+    String name;
 }

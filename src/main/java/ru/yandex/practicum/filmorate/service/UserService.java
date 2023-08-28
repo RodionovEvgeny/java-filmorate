@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -21,32 +20,21 @@ public class UserService {
     }
 
     public void addToFriends(Integer firstUserId, Integer secondUserId) {
-        User firstUser = userStorage.getUserById(firstUserId);
-        User secondUser = userStorage.getUserById(secondUserId);
-        firstUser.getFriends().add(secondUser.getId());
-        secondUser.getFriends().add(firstUser.getId());
+
+
+        userStorage.addFriends(firstUserId, secondUserId);
     }
 
     public void deleteFriend(Integer firstUserId, Integer secondUserId) {
-        User firstUser = userStorage.getUserById(firstUserId);
-        User secondUser = userStorage.getUserById(secondUserId);
-        firstUser.getFriends().remove(secondUser.getId());
-        secondUser.getFriends().remove(firstUser.getId());
+        userStorage.deleteFriend(firstUserId, secondUserId);
     }
 
     public Set<User> getMutualFriends(Integer firstUserId, Integer secondUserId) {
-        User firstUser = userStorage.getUserById(firstUserId);
-        User secondUser = userStorage.getUserById(secondUserId);
 
-        return firstUser.getFriends().stream()
-                .filter(id -> secondUser.getFriends().contains(id))
-                .map(userStorage::getUserById)
-                .collect(Collectors.toSet());
+        return new HashSet<>(userStorage.getMutualFriends(firstUserId, secondUserId));
     }
 
     public Set<User> getUsersFriends(Integer id) {
-        return userStorage.getUserById(id).getFriends().stream()
-                .map(userStorage::getUserById)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+        return new HashSet<>(userStorage.getUsersFriends(id));
     }
 }
