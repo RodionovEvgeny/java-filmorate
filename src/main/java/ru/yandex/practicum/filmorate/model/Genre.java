@@ -7,5 +7,5 @@ import lombok.Data;
 @AllArgsConstructor
 public class Genre {
     int id;
-    FilmGenres filmGenre;
+    String name;
 }

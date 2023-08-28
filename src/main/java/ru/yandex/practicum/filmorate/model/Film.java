@@ -22,7 +22,7 @@ public class Film {
     private final LocalDate releaseDate;
     private int id;
     private Set<Integer> likes = new HashSet<>();
-    private Set<FilmGenres> genre;
+    private Set<Genre> genres;
     private Mpa mpa;
 
     public int getFilmRatingId() {
@@ -30,35 +30,4 @@ public class Film {
        return mpa.getId();
     }
 
-    public static FilmRating getFilmRatingById(int id){
-        switch (id) {
-            case 1:
-                return FilmRating.G;
-            case 2:
-                return FilmRating.PG;
-            case 3:
-                return FilmRating.PG13;
-            case 4:
-                return FilmRating.R;
-            case 5:
-                return FilmRating.NC17;
-            default:
-                return FilmRating.NOT_STATED;
-        }
-    }
-
-   /* public Film(String name, String description, int duration, LocalDate releaseDate) {
-        this.name = name;
-        this.description = description;
-        this.duration = duration;
-        this.releaseDate = releaseDate;
-    }
-
-    public Film(String name, String description, int duration, LocalDate releaseDate, FilmRating filmRating) {
-        this.name = name;
-        this.description = description;
-        this.duration = duration;
-        this.releaseDate = releaseDate;
-        this.filmRating = filmRating;
-    }*/
 }
