@@ -1,8 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -75,6 +73,7 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public void deleteAllUsers() {
+
         jdbcTemplate.update("DELETE FROM \"User\"");
     }
 
@@ -179,7 +178,7 @@ public class DbUserStorage implements UserStorage {
         List<User> friends = new ArrayList<>();
         SqlRowSet row = jdbcTemplate.queryForRowSet(
                 "SELECT u.\"User_id\" ,u.\"Name\" ,u.\"Login\" ,u.\"Email\" ,u.\"Birthday\"" +
-                        "FROM \"Friends\" AS f" +
+                        "FROM \"Friends\" AS f " +
                         "JOIN \"User\" AS u ON u.\"User_id\" = f.\"Friend_id\"" +
                         "WHERE f.\"User_id\" = ? AND f.\"Friend_id\" IN (" +
                         "SELECT \"Friend_id\"" +

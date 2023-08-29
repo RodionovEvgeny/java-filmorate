@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Primary;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,12 +15,12 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @Component
-@Primary
 public class DbFilmStorage implements FilmStorage {
     JdbcTemplate jdbcTemplate;
 
@@ -70,6 +69,7 @@ public class DbFilmStorage implements FilmStorage {
 
     @Override
     public Film updateFilm(Film film) {
+        getFilmById(film.getId());
         String sqlQuery = "UPDATE \"Film\" " +
                 "SET \"Name\" = ?, \"Description\" = ?, \"Duration\" = ?, \"Release_date\" = ?, \"Rating_id\" = ? " +
                 "WHERE \"Film_id\" = ?";
@@ -132,6 +132,14 @@ public class DbFilmStorage implements FilmStorage {
         return jdbcTemplate.query(sqlQuery, this::mapRowToFilm, count);
     }
 
+    @Override
+    public void deleteAllFilms() {
+        jdbcTemplate.update("DELETE FROM \"Film_genres\"");
+        jdbcTemplate.update("DELETE FROM \"Likes\"");
+        jdbcTemplate.update("DELETE FROM \"Film\"");
+
+    }
+
     private List<Genre> getFilmsGenresById(int filmId) {
         List<Genre> genres = new ArrayList<>();
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(
@@ -148,7 +156,17 @@ public class DbFilmStorage implements FilmStorage {
     }
 
     private Film mapRowToFilm(ResultSet resultSet, int rowNum) throws SQLException {
-        Film film = new Film(
+        Film film = Film.builder()
+                .name(resultSet.getString("Name"))
+                .description(resultSet.getString("Description"))
+                .duration(resultSet.getInt("Duration"))
+                .releaseDate(resultSet.getDate("Release_date").toLocalDate())
+                .id(resultSet.getInt("Film_id"))
+                .mpa(new Mpa(resultSet.getInt("Rating_id"), resultSet.getString("Rating_name")))
+                .genres(getFilmsGenresById(resultSet.getInt("Film_id")))
+                .build();
+
+        /*Film film = new Film(
                 resultSet.getString("Name"),
                 (resultSet.getString("Description")),
                 (resultSet.getInt("Duration")),
@@ -157,7 +175,7 @@ public class DbFilmStorage implements FilmStorage {
                 resultSet.getInt("Rating_id"),
                 resultSet.getString("Rating_name")));
         film.setId(resultSet.getInt("Film_id"));
-        film.setGenres(getFilmsGenresById(film.getId()));
+        film.setGenres(getFilmsGenresById(film.getId()));*/
         return film;
     }
 }
