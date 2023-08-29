@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exceptions.GenreNotFoundException;
-import ru.yandex.practicum.filmorate.model.FilmGenres;
 import ru.yandex.practicum.filmorate.model.Genre;
 
 import java.sql.ResultSet;
@@ -40,6 +39,6 @@ public class DbGenreStorage implements GenreStorage {
     private Genre createGenre(ResultSet resultSet, int rowNum) throws SQLException {
         return new Genre(
                 resultSet.getInt("Genre_id"),
-               resultSet.getString("Genre_name"));
+                resultSet.getString("Genre_name"));
     }
 }
