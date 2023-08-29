@@ -7,8 +7,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Data
 public class Film {
@@ -21,12 +20,6 @@ public class Film {
     @ValidDateFilm(message = "Дата релиза не может быть раньше создания первого фильма.")
     private final LocalDate releaseDate;
     private int id;
-    private Set<Genre> genres;
+    private List<Genre> genres;
     private Mpa mpa;
-
-    public int getFilmRatingId() {
-        if (mpa == null) return 6;
-       return mpa.getId();
-    }
-
 }

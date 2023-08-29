@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Set;
 
 @Slf4j
 @RestController
@@ -45,7 +44,7 @@ public class FilmController {
     }
 
     @GetMapping
-    private Set<Film> getFilms() {
+    private List<Film> getFilms() {
         return filmStorage.getAllFilms();
     }
 
@@ -57,10 +56,5 @@ public class FilmController {
     @GetMapping("/{id}")
     private Film getFilm(@PathVariable(name = "id") Integer id) {
         return filmStorage.getFilmById(id);
-    }
-
-    @DeleteMapping
-    public void deleteAllFilms() {
-        filmStorage.deleteAllFilms();
     }
 }

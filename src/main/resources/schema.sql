@@ -52,7 +52,10 @@ CONSTRAINT "pk_Rating" PRIMARY KEY ("Rating_id")
 
 CREATE TABLE IF NOT EXISTS "Film_genres" (
     "Film_id" integer   NOT NULL,
-    "Genre_id" integer   NOT NULL
+    "Genre_id" integer   NOT NULL,
+    CONSTRAINT "pk_Film_genres" PRIMARY KEY (
+        "Film_id","Genre_id"
+     )
 );
 
 

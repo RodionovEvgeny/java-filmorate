@@ -13,8 +13,6 @@ import java.util.List;
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
-    @Autowired
-    @Qualifier("dbUserStorage")
     private final UserStorage userStorage;
 
     public FilmService(FilmStorage filmStorage, UserStorage userStorage) {
@@ -36,10 +34,5 @@ public class FilmService {
 
     public List<Film> getTopFilms(Integer count) {
         return filmStorage.getTopFilms(count);
-                /*getAllFilms().stream()
-                .sorted((f1, f2) -> f2.getLikes().size() - f1.getLikes().size())
-                .limit(count)
-                .collect(Collectors.toList());
-    }*/
     }
 }

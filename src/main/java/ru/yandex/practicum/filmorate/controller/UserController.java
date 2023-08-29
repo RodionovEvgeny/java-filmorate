@@ -1,12 +1,14 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -47,7 +49,7 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    private Set<User> getUsersFriends(@PathVariable(name = "id") Integer id) {
+    private List<User> getUsersFriends(@PathVariable(name = "id") Integer id) {
         return userService.getUsersFriends(id);
     }
 

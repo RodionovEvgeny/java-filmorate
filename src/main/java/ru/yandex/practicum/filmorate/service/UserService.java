@@ -7,12 +7,11 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
 public class UserService {
-    @Autowired
-    @Qualifier("dbUserStorage")
     private final UserStorage userStorage;
 
     public UserService(UserStorage userStorage) {
@@ -20,8 +19,6 @@ public class UserService {
     }
 
     public void addToFriends(Integer firstUserId, Integer secondUserId) {
-
-
         userStorage.addFriends(firstUserId, secondUserId);
     }
 
@@ -30,11 +27,10 @@ public class UserService {
     }
 
     public Set<User> getMutualFriends(Integer firstUserId, Integer secondUserId) {
-
         return new HashSet<>(userStorage.getMutualFriends(firstUserId, secondUserId));
     }
 
-    public Set<User> getUsersFriends(Integer id) {
-        return new HashSet<>(userStorage.getUsersFriends(id));
+    public List<User> getUsersFriends(Integer id) {
+        return userStorage.getUsersFriends(id);
     }
 }
