@@ -53,7 +53,7 @@ public class DbFilmStorage implements FilmStorage {
         film.setId(newId);
         updateGenresDb(film);
         log.debug("Фильм добавлен.");
-        return film;
+        return getFilmById(newId);
     }
 
     private void updateGenresDb(Film film) {
@@ -137,7 +137,6 @@ public class DbFilmStorage implements FilmStorage {
         jdbcTemplate.update("DELETE FROM \"Film_genres\"");
         jdbcTemplate.update("DELETE FROM \"Likes\"");
         jdbcTemplate.update("DELETE FROM \"Film\"");
-
     }
 
     private List<Genre> getFilmsGenresById(int filmId) {
@@ -165,17 +164,6 @@ public class DbFilmStorage implements FilmStorage {
                 .mpa(new Mpa(resultSet.getInt("Rating_id"), resultSet.getString("Rating_name")))
                 .genres(getFilmsGenresById(resultSet.getInt("Film_id")))
                 .build();
-
-        /*Film film = new Film(
-                resultSet.getString("Name"),
-                (resultSet.getString("Description")),
-                (resultSet.getInt("Duration")),
-                ((resultSet.getDate("Release_date"))).toLocalDate());
-        film.setMpa(new Mpa(
-                resultSet.getInt("Rating_id"),
-                resultSet.getString("Rating_name")));
-        film.setId(resultSet.getInt("Film_id"));
-        film.setGenres(getFilmsGenresById(film.getId()));*/
         return film;
     }
 }

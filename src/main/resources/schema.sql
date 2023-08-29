@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS "User" (
     "Name" varchar   NULL,
     "Login" varchar   NOT NULL,
     "Email" varchar   NOT NULL,
-    "Birthday" timestamp   NULL,
+    "Birthday" date   NULL,
     CONSTRAINT "pk_User" PRIMARY KEY (
         "User_id"
      )
@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS "Film" (
     "Name" varchar   NOT NULL,
     "Description" varchar   NOT NULL,
     "Duration" int   NOT NULL,
-    "Release_date" timestamp   NOT NULL,
+    "Release_date" date   NOT NULL,
     "Rating_id" integer NOT NULL,
     CONSTRAINT "pk_Film" PRIMARY KEY (
         "Film_id"
