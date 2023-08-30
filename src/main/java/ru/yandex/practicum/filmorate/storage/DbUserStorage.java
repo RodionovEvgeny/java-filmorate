@@ -73,7 +73,7 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public void deleteAllUsers() {
-
+        jdbcTemplate.update("DELETE FROM \"Friends\"");
         jdbcTemplate.update("DELETE FROM \"User\"");
     }
 
