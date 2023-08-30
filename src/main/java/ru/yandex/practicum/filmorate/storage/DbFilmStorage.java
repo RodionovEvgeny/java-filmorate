@@ -15,7 +15,6 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,5 +164,10 @@ public class DbFilmStorage implements FilmStorage {
                 .genres(getFilmsGenresById(resultSet.getInt("Film_id")))
                 .build();
         return film;
+    }
+
+    public List<Integer> getLikesByFilmId(int id) {
+        return jdbcTemplate.query("SELECT * FROM \"Likes\" WHERE \"Film_id\" = ?",
+                (rs, rn) -> rs.getInt("User_id"), id);
     }
 }
