@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/mpa")
-public class MpaController { // TODO логирование сделать человеческое везде
+public class MpaController {
     private final MpaService mpaService;
 
     public MpaController(MpaService mpaService) {

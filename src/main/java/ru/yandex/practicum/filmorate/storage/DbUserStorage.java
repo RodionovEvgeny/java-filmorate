@@ -100,7 +100,7 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public void addFriends(int firstUserId, int secondUserId) {
-        isValidFriendship(firstUserId, secondUserId);
+        validateFriendship(firstUserId, secondUserId);
 
         SqlRowSet row = jdbcTemplate.queryForRowSet(
                 "SELECT * " +
@@ -133,7 +133,7 @@ public class DbUserStorage implements UserStorage {
         );
     }
 
-    private boolean isValidFriendship(int firstUserId, int secondUserId) {
+    private void validateFriendship(int firstUserId, int secondUserId) {
         getUserById(firstUserId);
         getUserById(secondUserId);
         SqlRowSet row = jdbcTemplate.queryForRowSet("SELECT * " +
@@ -149,7 +149,6 @@ public class DbUserStorage implements UserStorage {
                     secondUserId
             ));
         }
-        return true;
     }
 
     @Override

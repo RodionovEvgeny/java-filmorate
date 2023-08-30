@@ -57,6 +57,7 @@ public class FilmController {
     private Film getFilm(@PathVariable(name = "id") Integer id) {
         return filmStorage.getFilmById(id);
     }
+
     @DeleteMapping
     public void deleteAllFilms() {
         filmStorage.deleteAllFilms();

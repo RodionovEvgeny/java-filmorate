@@ -154,7 +154,7 @@ public class DbFilmStorage implements FilmStorage {
     }
 
     private Film mapRowToFilm(ResultSet resultSet, int rowNum) throws SQLException {
-        Film film = Film.builder()
+        return Film.builder()
                 .name(resultSet.getString("Name"))
                 .description(resultSet.getString("Description"))
                 .duration(resultSet.getInt("Duration"))
@@ -163,7 +163,6 @@ public class DbFilmStorage implements FilmStorage {
                 .mpa(new Mpa(resultSet.getInt("Rating_id"), resultSet.getString("Rating_name")))
                 .genres(getFilmsGenresById(resultSet.getInt("Film_id")))
                 .build();
-        return film;
     }
 
     public List<Integer> getLikesByFilmId(int id) {

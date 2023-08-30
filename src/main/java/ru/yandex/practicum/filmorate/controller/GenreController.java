@@ -13,7 +13,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/genres")
-public class GenreController { // TODO логирование сделать человеческое везде
+public class GenreController {
     private final GenreService genreService;
 
     public GenreController(GenreService genreService) {
@@ -21,12 +21,12 @@ public class GenreController { // TODO логирование сделать ч�
     }
 
     @GetMapping
-    private List<Genre> getAllUsers() {
+    private List<Genre> getAllGenres() {
         return genreService.getAllGenres();
     }
 
     @GetMapping("/{id}")
-    private Genre getUser(@PathVariable(name = "id") Integer id) { // TODO посмотреть, мб можно дефолтное значение для вариаблы сделать
+    private Genre getGenreById(@PathVariable(name = "id") Integer id) { // TODO посмотреть, мб можно дефолтное значение для вариаблы сделать
         return genreService.getGenreById(id);
     }
 }
