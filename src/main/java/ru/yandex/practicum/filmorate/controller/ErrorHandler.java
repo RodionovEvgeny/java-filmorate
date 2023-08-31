@@ -10,6 +10,8 @@ import ru.yandex.practicum.filmorate.exceptions.NotFoundException;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.ExceptionDTO;
 
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 @Slf4j
 public class ErrorHandler {
@@ -29,6 +31,13 @@ public class ErrorHandler {
     @ExceptionHandler
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ExceptionDTO handleMethodArgumentNotValidException(final MethodArgumentNotValidException e) {
+        log.warn(e.getMessage());
+        return new ExceptionDTO(e.getMessage());
+    }
+
+    @ExceptionHandler
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ExceptionDTO handleConstraintViolationException(final ConstraintViolationException e) {
         log.warn(e.getMessage());
         return new ExceptionDTO(e.getMessage());
     }
