@@ -24,7 +24,7 @@ public class MpaController {
     }
 
     @GetMapping("/{id}")
-    private Mpa getMpaById(@PathVariable(name = "id") Integer id) { // TODO посмотреть, мб можно дефолтное значение для вариаблы сделать
+    private Mpa getMpaById(@PathVariable(name = "id") Integer id) {
         return mpaService.getMpaById(id);
     }
 }

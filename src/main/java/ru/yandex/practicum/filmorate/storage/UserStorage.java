@@ -20,7 +20,7 @@ public interface UserStorage {
 
     List<User> getUsersFriends(int userId);
 
-    List<User> getMutualFriends(Integer firstUserId, Integer secondUserId); // TODO разобраться нужен ли тут INTEGER или int
+    List<User> getMutualFriends(Integer firstUserId, Integer secondUserId);
 
     void deleteFriend(Integer firstUserId, Integer secondUserId);
 }
