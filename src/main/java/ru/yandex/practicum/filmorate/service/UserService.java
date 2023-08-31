@@ -29,4 +29,24 @@ public class UserService {
     public List<User> getUsersFriends(Integer id) {
         return userStorage.getUsersFriends(id);
     }
+
+    public void deleteAllUsers() {
+        userStorage.deleteAllUsers();
+    }
+
+    public User addUser(User user) {
+        return userStorage.addUser(user);
+    }
+
+    public User updateUser(User user) {
+        return userStorage.updateUser(user);
+    }
+
+    public Set<User> getAllUsers() {
+        return userStorage.getAllUsers();
+    }
+
+    public User getUserById(Integer id) {
+        return userStorage.getUserById(id);
+    }
 }

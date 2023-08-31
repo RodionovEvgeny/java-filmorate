@@ -33,4 +33,24 @@ public class FilmService {
     public List<Film> getTopFilms(@Min(1) Integer count) {
         return filmStorage.getTopFilms(count);
     }
+
+    public Film addFilm(Film film) {
+        return filmStorage.addFilm(film);
+    }
+
+    public Film updateFilm(Film film) {
+        return filmStorage.updateFilm(film);
+    }
+
+    public List<Film> getAllFilms() {
+        return filmStorage.getAllFilms();
+    }
+
+    public Film getFilmById(Integer id) {
+        return filmStorage.getFilmById(id);
+    }
+
+    public void deleteAllFilms() {
+        filmStorage.deleteAllFilms();
+    }
 }
