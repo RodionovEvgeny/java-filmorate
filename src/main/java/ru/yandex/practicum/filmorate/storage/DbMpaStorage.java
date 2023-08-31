@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.storage;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -12,13 +13,10 @@ import java.sql.SQLException;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class DbMpaStorage implements MpaStorage {
-    @Autowired
-    private final JdbcTemplate jdbcTemplate;
 
-    public DbMpaStorage(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    private final JdbcTemplate jdbcTemplate;
 
     @Override
     public List<Mpa> getAllMpa() {
