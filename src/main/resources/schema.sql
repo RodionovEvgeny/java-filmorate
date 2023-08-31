@@ -33,7 +33,10 @@ CREATE TABLE IF NOT EXISTS "Likes" (
 CREATE TABLE IF NOT EXISTS "Friends" (
     "User_id" integer   NOT NULL,
     "Friend_id" integer   NOT NULL,
-    "Approved" boolean   NOT NULL
+    "Approved" boolean   NOT NULL,
+    CONSTRAINT "pk_Friends" PRIMARY KEY (
+        "User_id","Friend_id"
+     )
 );
 
 CREATE TABLE IF NOT EXISTS "Genres" (
@@ -82,4 +85,8 @@ REFERENCES "Film" ("Film_id");
 
 ALTER TABLE "Film_genres" ADD CONSTRAINT IF NOT EXISTS "fk_Film_genres_Genre_id" FOREIGN KEY("Genre_id")
 REFERENCES "Genres" ("Genre_id");
+
+CREATE UNIQUE INDEX IF NOT EXISTS "USER_EMAIL_UINDEX" ON "User" ("Email");
+CREATE UNIQUE INDEX IF NOT EXISTS "USER_LOGIN_UINDEX" ON "User" ("Login");
+
 
