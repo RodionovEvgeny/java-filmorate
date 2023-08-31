@@ -11,7 +11,9 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,7 +27,7 @@ class DbFilmStorageTest {
             .duration(15)
             .releaseDate(LocalDate.parse("2000-01-01"))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film film2 = Film.builder()
             .name("Name2")
@@ -33,7 +35,7 @@ class DbFilmStorageTest {
             .duration(20)
             .releaseDate(LocalDate.parse("2001-01-01"))
             .mpa(new Mpa(2, null))
-            .genres(List.of(new Genre(2, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(2, null))))
             .build();
 
     private final User user1 = new User("1email@email.com",
@@ -60,7 +62,7 @@ class DbFilmStorageTest {
         assertThat(film).hasFieldOrPropertyWithValue("releaseDate", film1.getReleaseDate());
         assertThat(film).hasFieldOrPropertyWithValue("duration", film1.getDuration());
         assertThat(film).hasFieldOrPropertyWithValue("mpa", new Mpa(1, "G"));
-        assertThat(film).hasFieldOrPropertyWithValue("genres", List.of(new Genre(1, "Комедия")));
+        assertThat(film).hasFieldOrPropertyWithValue("genres", Set.of(new Genre(1, "Комедия")));
     }
 
     @Test
@@ -75,7 +77,7 @@ class DbFilmStorageTest {
         assertThat(film).hasFieldOrPropertyWithValue("releaseDate", film2.getReleaseDate());
         assertThat(film).hasFieldOrPropertyWithValue("duration", film2.getDuration());
         assertThat(film).hasFieldOrPropertyWithValue("mpa", new Mpa(2, "PG"));
-        assertThat(film).hasFieldOrPropertyWithValue("genres", List.of(new Genre(2, "Драма")));
+        assertThat(film).hasFieldOrPropertyWithValue("genres", Set.of(new Genre(2, "Драма")));
         assertThat(filmStorage.getAllFilms()).hasSize(1);
     }
 
@@ -92,14 +94,14 @@ class DbFilmStorageTest {
         assertThat(films.get(0)).hasFieldOrPropertyWithValue("releaseDate", film1.getReleaseDate());
         assertThat(films.get(0)).hasFieldOrPropertyWithValue("duration", film1.getDuration());
         assertThat(films.get(0)).hasFieldOrPropertyWithValue("mpa", new Mpa(1, "G"));
-        assertThat(films.get(0)).hasFieldOrPropertyWithValue("genres", List.of(new Genre(1, "Комедия")));
+        assertThat(films.get(0)).hasFieldOrPropertyWithValue("genres", Set.of(new Genre(1, "Комедия")));
 
         assertThat(films.get(1)).hasFieldOrPropertyWithValue("name", film2.getName());
         assertThat(films.get(1)).hasFieldOrPropertyWithValue("description", film2.getDescription());
         assertThat(films.get(1)).hasFieldOrPropertyWithValue("releaseDate", film2.getReleaseDate());
         assertThat(films.get(1)).hasFieldOrPropertyWithValue("duration", film2.getDuration());
         assertThat(films.get(1)).hasFieldOrPropertyWithValue("mpa", new Mpa(2, "PG"));
-        assertThat(films.get(1)).hasFieldOrPropertyWithValue("genres", List.of(new Genre(2, "Драма")));
+        assertThat(films.get(1)).hasFieldOrPropertyWithValue("genres", Set.of(new Genre(2, "Драма")));
     }
 
     @Test
@@ -113,7 +115,7 @@ class DbFilmStorageTest {
         assertThat(film).hasFieldOrPropertyWithValue("releaseDate", film1.getReleaseDate());
         assertThat(film).hasFieldOrPropertyWithValue("duration", film1.getDuration());
         assertThat(film).hasFieldOrPropertyWithValue("mpa", new Mpa(1, "G"));
-        assertThat(film).hasFieldOrPropertyWithValue("genres", List.of(new Genre(1, "Комедия")));
+        assertThat(film).hasFieldOrPropertyWithValue("genres", Set.of(new Genre(1, "Комедия")));
     }
 
     @Test

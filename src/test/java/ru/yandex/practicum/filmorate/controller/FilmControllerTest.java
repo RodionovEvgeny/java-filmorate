@@ -14,7 +14,8 @@ import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -31,7 +32,7 @@ class FilmControllerTest {
             .duration(15)
             .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film updatedFilm = Film.builder()
             .name("New Name")
@@ -39,7 +40,7 @@ class FilmControllerTest {
             .duration(15)
             .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film film2 = Film.builder()
             .name("Name 2")
@@ -47,7 +48,7 @@ class FilmControllerTest {
             .duration(15)
             .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film invalidDescriptionFilm = Film.builder()
             .name("Name")
@@ -58,7 +59,7 @@ class FilmControllerTest {
             .duration(15)
             .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film invalidNameFilm = Film.builder()
             .name("")
@@ -66,7 +67,7 @@ class FilmControllerTest {
             .duration(15)
             .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film invalidDurationFilm = Film.builder()
             .name("Name")
@@ -74,7 +75,7 @@ class FilmControllerTest {
             .duration(0)
             .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
     private final Film invalidReleaseDateFilm = Film.builder()
             .name("Name")
@@ -82,7 +83,7 @@ class FilmControllerTest {
             .duration(15)
             .releaseDate(LocalDate.of(1895, 12, 28).minusDays(15))
             .mpa(new Mpa(1, null))
-            .genres(List.of(new Genre(1, null)))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
             .build();
 
 

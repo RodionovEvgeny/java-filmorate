@@ -16,7 +16,7 @@ import ru.yandex.practicum.filmorate.model.Mpa;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
 
 @Slf4j
@@ -138,8 +138,8 @@ public class DbFilmStorage implements FilmStorage {
         jdbcTemplate.update("DELETE FROM \"Film\"");
     }
 
-    private List<Genre> getFilmsGenresById(int filmId) {
-        List<Genre> genres = new ArrayList<>();
+    private LinkedHashSet<Genre> getFilmsGenresById(int filmId) {
+        LinkedHashSet<Genre> genres = new LinkedHashSet<>();
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(
                 "SELECT * " +
                         "FROM \"Film_genres\" AS fg " +
