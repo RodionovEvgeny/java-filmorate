@@ -38,10 +38,10 @@ class DbFilmStorageTest {
             .genres(new LinkedHashSet<Genre>(Set.of(new Genre(2, null))))
             .build();
 
-    private final User user1 = new User("1email@email.com",
-            "login1", LocalDate.now().minusYears(20), 0, "Name1");
-    private final User user2 = new User("2email@email.com",
-            "login2", LocalDate.now().minusYears(20), 0, "Name2");
+    private final User user1 = new User(0, "1email@email.com",
+            "login1", LocalDate.now().minusYears(20), "Name1");
+    private final User user2 = new User(0, "2email@email.com",
+            "login2", LocalDate.now().minusYears(20), "Name2");
 
     @Autowired
     private FilmStorage filmStorage;

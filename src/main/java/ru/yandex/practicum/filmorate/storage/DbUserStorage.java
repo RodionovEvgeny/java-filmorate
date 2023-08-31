@@ -91,10 +91,10 @@ public class DbUserStorage implements UserStorage {
 
     private User mapRowToUser(ResultSet resultSet, int rowNum) throws SQLException {
         return new User(
+                resultSet.getInt("User_id"),
                 resultSet.getString("Email"),
                 resultSet.getString("Login"),
                 resultSet.getDate("Birthday").toLocalDate(),
-                resultSet.getInt("User_id"),
                 resultSet.getString("Name"));
     }
 
@@ -161,10 +161,10 @@ public class DbUserStorage implements UserStorage {
                         "WHERE f.\"User_id\" = ? ", userId);
         while (row.next()) {
             User user = new User(
+                    (row.getInt("User_id")),
                     row.getString("Email"),
                     (row.getString("Login")),
                     ((row.getDate("Birthday"))).toLocalDate(),
-                    (row.getInt("User_id")),
                     (row.getString("Name")));
             friends.add(user);
         }
@@ -188,10 +188,10 @@ public class DbUserStorage implements UserStorage {
 
         while (row.next()) {
             User user = new User(
+                    (row.getInt("User_id")),
                     row.getString("Email"),
                     (row.getString("Login")),
                     ((row.getDate("Birthday"))).toLocalDate(),
-                    (row.getInt("User_id")),
                     (row.getString("Name")));
             friends.add(user);
         }

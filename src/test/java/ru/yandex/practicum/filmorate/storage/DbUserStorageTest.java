@@ -16,12 +16,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest
 @AutoConfigureTestDatabase
 class DbUserStorageTest {
-    private final User user1 = new User("1email@email.com",
-            "login1", LocalDate.now().minusYears(20), 0, "Name1");
-    private final User user2 = new User("2email@email.com",
-            "login2", LocalDate.now().minusYears(20), 0, "Name2");
-    private final User user3 = new User("3email@email.com",
-            "login3", LocalDate.now().minusYears(20), 0, "Name3");
+    private final User user1 = new User(0, "1email@email.com",
+            "login1", LocalDate.now().minusYears(20), "Name1");
+    private final User user2 = new User(0, "2email@email.com",
+            "login2", LocalDate.now().minusYears(20), "Name2");
+    private final User user3 = new User(0, "3email@email.com",
+            "login3", LocalDate.now().minusYears(20), "Name3");
 
     @Autowired
     private UserStorage userStorage;

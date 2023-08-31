@@ -22,18 +22,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 class UserControllerTest {
-    private final User user = new User("email@email.com",
-            "login", LocalDate.now().minusYears(20), 0, "Name1");
-    private final User noNameUser = new User("email@email.com",
-            "login", LocalDate.now().minusYears(20), 0, "");
-    private final User updatedUser = new User("email@email.com",
-            "login", LocalDate.now().minusYears(20), 1, "New Name");
-    private final User invalidEmailUser = new User("@email.com",
-            "login", LocalDate.now().minusYears(20), 0, "Name");
-    private final User invalidBirthDateUser = new User("email@email.com",
-            "login", LocalDate.now().plusYears(20), 0, "Name");
-    private final User invalidIdUser = new User("email@email.com",
-            "login", LocalDate.now().minusYears(20), 900, "Name");
+    private final User user = new User(0, "email@email.com",
+            "login", LocalDate.now().minusYears(20), "Name1");
+    private final User noNameUser = new User(0, "email@email.com",
+            "login", LocalDate.now().minusYears(20), "");
+    private final User updatedUser = new User(1, "email@email.com",
+            "login", LocalDate.now().minusYears(20), "New Name");
+    private final User invalidEmailUser = new User(0, "@email.com",
+            "login", LocalDate.now().minusYears(20), "Name");
+    private final User invalidBirthDateUser = new User(0, "email@email.com",
+            "login", LocalDate.now().plusYears(20), "Name");
+    private final User invalidIdUser = new User(900, "email@email.com",
+            "login", LocalDate.now().minusYears(20), "Name");
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
