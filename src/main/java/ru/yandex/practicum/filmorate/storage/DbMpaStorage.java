@@ -1,11 +1,10 @@
 package ru.yandex.practicum.filmorate.storage;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.MpaNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.sql.ResultSet;
@@ -30,7 +29,7 @@ public class DbMpaStorage implements MpaStorage {
         if (rows.next()) {
             return new Mpa(rows.getInt("Rating_id"), rows.getString("Rating_name"));
         } else {
-            throw new MpaNotFoundException(String.format("Рейтинг с id %s не найден.", id));
+            throw new EntityNotFoundException(String.format("Рейтинг с id %s не найден.", id), Mpa.class.getName());
         }
     }
 

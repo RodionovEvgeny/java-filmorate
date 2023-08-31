@@ -8,7 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
@@ -80,7 +80,9 @@ public class DbFilmStorage implements FilmStorage {
                 film.getMpa().getId(),
                 film.getId());
         if (updateStatus == 0) {
-            throw new FilmNotFoundException(String.format("Фильм с id = %s не найден.", film.getId()));
+            System.out.println(Film.class.getName());
+            throw new EntityNotFoundException(
+                    String.format("Фильм с id = %s не найден.", film.getId()), Film.class.getName());
         }
         return getFilmById(film.getId());
     }
@@ -102,7 +104,7 @@ public class DbFilmStorage implements FilmStorage {
                     "WHERE \"Film_id\" = ?";
             return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToFilm, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new FilmNotFoundException(String.format("Фильм с id %s не найден.", id));
+            throw new EntityNotFoundException(String.format("Фильм с id %s не найден.", id), Film.class.getName());
         }
     }
 

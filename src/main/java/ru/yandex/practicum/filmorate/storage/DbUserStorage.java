@@ -8,7 +8,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exceptions.UserNotFoundException;
+import ru.yandex.practicum.filmorate.exceptions.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.PreparedStatement;
@@ -59,7 +59,8 @@ public class DbUserStorage implements UserStorage {
                 user.getBirthday(),
                 user.getId());
         if (updateStatus == 0) {
-            throw new UserNotFoundException(String.format("Пользователь с id = %s не найден.", user.getId()));
+            throw new EntityNotFoundException(
+                    String.format("Пользователь с id = %s не найден.", user.getId()), User.class.getName());
         }
         return getUserById(user.getId());
     }
@@ -83,7 +84,8 @@ public class DbUserStorage implements UserStorage {
                     "WHERE \"User_id\" = ?";
             return jdbcTemplate.queryForObject(sqlQuery, this::mapRowToUser, id);
         } catch (EmptyResultDataAccessException e) {
-            throw new UserNotFoundException(String.format("Пользователь с id %s не найден.", id));
+            throw new EntityNotFoundException(
+                    String.format("Пользователь с id %s не найден.", id), User.class.getName());
         }
     }
 
