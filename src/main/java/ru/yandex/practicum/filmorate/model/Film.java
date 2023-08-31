@@ -5,6 +5,7 @@ import lombok.Data;
 import ru.yandex.practicum.filmorate.validation.ValidDateFilm;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -23,5 +24,6 @@ public class Film {
     private final LocalDate releaseDate;
     private int id;
     private List<Genre> genres;
+    @NotNull(message = "У фильма должен быть рейтинг.")
     private Mpa mpa;
 }
