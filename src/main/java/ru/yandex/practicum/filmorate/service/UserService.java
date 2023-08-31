@@ -35,11 +35,11 @@ public class UserService {
     }
 
     public User addUser(User user) {
-        return userStorage.addUser(user);
+        return userStorage.addUser(checkUsersName(user));
     }
 
     public User updateUser(User user) {
-        return userStorage.updateUser(user);
+        return userStorage.updateUser(checkUsersName(user));
     }
 
     public Set<User> getAllUsers() {
@@ -48,5 +48,11 @@ public class UserService {
 
     public User getUserById(Integer id) {
         return userStorage.getUserById(id);
+    }
+
+    private User checkUsersName(User user) {
+        if (user.getName() == null || user.getName().isBlank())
+            user.setName(user.getLogin());
+        return user;
     }
 }

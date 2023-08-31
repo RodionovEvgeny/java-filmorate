@@ -24,9 +24,6 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public User addUser(User user) {
-        if (user.getName() == null || user.getName().isEmpty())
-            user.setName(user.getLogin());
-
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(connection -> {
                     PreparedStatement stmt = connection.prepareStatement(
