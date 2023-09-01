@@ -22,18 +22,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @AutoConfigureTestDatabase
 class UserControllerTest {
-    private final User user = new User(0, "email@email.com",
-            "login", LocalDate.now().minusYears(20), "Name1");
-    private final User noNameUser = new User(0, "email@email.com",
-            "login", LocalDate.now().minusYears(20), "");
-    private final User updatedUser = new User(1, "email@email.com",
-            "login", LocalDate.now().minusYears(20), "New Name");
+    private final User user = new User(0, "1email@email.com",
+            "1login", LocalDate.now().minusYears(20), "Name1");
+    private final User noNameUser = new User(0, "2email@email.com",
+            "2login", LocalDate.now().minusYears(20), "");
+    private final User updatedUser = new User(1, "3email@email.com",
+            "3login", LocalDate.now().minusYears(20), "New Name");
     private final User invalidEmailUser = new User(0, "@email.com",
-            "login", LocalDate.now().minusYears(20), "Name");
-    private final User invalidBirthDateUser = new User(0, "email@email.com",
-            "login", LocalDate.now().plusYears(20), "Name");
-    private final User invalidIdUser = new User(900, "email@email.com",
-            "login", LocalDate.now().minusYears(20), "Name");
+            "4login", LocalDate.now().minusYears(20), "Name");
+    private final User invalidBirthDateUser = new User(0, "5email@email.com",
+            "5login", LocalDate.now().plusYears(20), "Name");
+    private final User invalidIdUser = new User(900, "6email@email.com",
+            "6login", LocalDate.now().minusYears(20), "Name");
     @Autowired
     private ObjectMapper objectMapper;
     @Autowired
@@ -109,7 +109,7 @@ class UserControllerTest {
                         get("/users")
                 )
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].name").value("login"))
+                .andExpect(jsonPath("$[0].name").value("2login"))
                 .andExpect(jsonPath("$", hasSize(1)));
     }
 

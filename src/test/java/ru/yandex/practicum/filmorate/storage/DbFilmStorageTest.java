@@ -51,6 +51,7 @@ class DbFilmStorageTest {
     @AfterEach
     void tearDown() {
         filmStorage.deleteAllFilms();
+        userStorage.deleteAllUsers();
     }
 
     @Test
