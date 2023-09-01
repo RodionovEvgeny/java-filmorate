@@ -139,13 +139,17 @@ public class DbFilmStorage implements FilmStorage {
     }
 
     private LinkedHashSet<Genre> getFilmsGenresById(int filmId) {
-        LinkedHashSet<Genre> genres = new LinkedHashSet<>();
         SqlRowSet rowSet = jdbcTemplate.queryForRowSet(
                 "SELECT * " +
                         "FROM \"Film_genres\" AS fg " +
                         "JOIN \"Genres\" AS g ON fg.\"Genre_id\"=g.\"Genre_id\" " +
                         "WHERE \"Film_id\" = ?",
                 filmId);
+        return mapRowSetToGenres(rowSet);
+    }
+
+    private LinkedHashSet<Genre> mapRowSetToGenres(SqlRowSet rowSet) {
+        LinkedHashSet<Genre> genres = new LinkedHashSet<>();
         while (rowSet.next()) {
             Genre genre = new Genre(rowSet.getInt("Genre_id"), rowSet.getString("Genre_name"));
             genres.add(genre);

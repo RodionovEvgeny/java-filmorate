@@ -150,29 +150,17 @@ public class DbUserStorage implements UserStorage {
 
     @Override
     public List<User> getUsersFriends(int userId) {
-        List<User> friends = new ArrayList<>();
-        SqlRowSet row = jdbcTemplate.queryForRowSet(
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(
                 "SELECT u.\"User_id\" ,u.\"Name\" ,u.\"Login\" ,u.\"Email\" ,u.\"Birthday\" \n" +
                         "FROM \"Friends\" AS f\n" +
                         "JOIN \"User\" AS u ON u.\"User_id\" = f.\"Friend_id\"\n" +
                         "WHERE f.\"User_id\" = ? ", userId);
-        while (row.next()) {
-            User user = new User(
-                    (row.getInt("User_id")),
-                    row.getString("Email"),
-                    (row.getString("Login")),
-                    ((row.getDate("Birthday"))).toLocalDate(),
-                    (row.getString("Name")));
-            friends.add(user);
-        }
-        friends.sort(Comparator.comparingInt(User::getId));
-        return friends;
+        return mapUsersFriends(rowSet);
     }
 
     @Override
     public List<User> getMutualFriends(Integer firstUserId, Integer secondUserId) {
-        List<User> friends = new ArrayList<>();
-        SqlRowSet row = jdbcTemplate.queryForRowSet(
+        SqlRowSet rowSet = jdbcTemplate.queryForRowSet(
                 "SELECT u.\"User_id\" ,u.\"Name\" ,u.\"Login\" ,u.\"Email\" ,u.\"Birthday\"" +
                         "FROM \"Friends\" AS f " +
                         "JOIN \"User\" AS u ON u.\"User_id\" = f.\"Friend_id\"" +
@@ -182,16 +170,20 @@ public class DbUserStorage implements UserStorage {
                         "WHERE \"User_id\" = ?)",
                 firstUserId,
                 secondUserId);
+        return mapUsersFriends(rowSet);
+    }
 
-        while (row.next()) {
-            User user = new User(
-                    (row.getInt("User_id")),
-                    row.getString("Email"),
-                    (row.getString("Login")),
-                    ((row.getDate("Birthday"))).toLocalDate(),
-                    (row.getString("Name")));
-            friends.add(user);
+    private List<User> mapUsersFriends(SqlRowSet rowSet) {
+        List<User> friends = new ArrayList<>();
+        while (rowSet.next()) {
+            friends.add(new User(
+                    (rowSet.getInt("User_id")),
+                    rowSet.getString("Email"),
+                    (rowSet.getString("Login")),
+                    ((rowSet.getDate("Birthday"))).toLocalDate(),
+                    (rowSet.getString("Name"))));
         }
+        friends.sort(Comparator.comparingInt(User::getId));
         return friends;
     }
 
