@@ -4,13 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.Mpa;
 
 import java.time.LocalDate;
+import java.util.LinkedHashSet;
+import java.util.Set;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -19,25 +24,68 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureTestDatabase
 class FilmControllerTest {
-    private final Film film1 = new Film("Name 1", "Description 1.",
-            15, LocalDate.of(1895, 12, 28).plusDays(15));
-    private final Film updatedFilm = new Film("New Name", "New Description.",
-            15, LocalDate.of(1895, 12, 28).plusDays(15));
-    private final Film film2 = new Film("Name 2", "Description 2.",
-            15, LocalDate.of(1895, 12, 28).plusDays(15));
-    private final Film invalidDescriptionFilm = new Film("Name",
-            "Invalid description. Invalid description. Invalid description. " +
+    private final Film film1 = Film.builder()
+            .name("Name 1")
+            .description("Description 1.")
+            .duration(15)
+            .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+    private final Film updatedFilm = Film.builder()
+            .name("New Name")
+            .description("New Description.")
+            .duration(15)
+            .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+    private final Film film2 = Film.builder()
+            .name("Name 2")
+            .description("Description 2.")
+            .duration(15)
+            .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+    private final Film invalidDescriptionFilm = Film.builder()
+            .name("Name")
+            .description("Invalid description. Invalid description. Invalid description. " +
                     "Invalid description. Invalid description. Invalid description. " +
                     "Invalid description. Invalid description. Invalid description. " +
-                    "Invalid description. Invalid description. Invalid description. ",
-            15, LocalDate.of(1895, 12, 28).plusDays(15));
-    private final Film invalidNameFilm = new Film("", "Description.",
-            15, LocalDate.of(1895, 12, 28).plusDays(15));
-    private final Film invalidDurationFilm = new Film("Name", "Description.",
-            0, LocalDate.of(1895, 12, 28).plusDays(15));
-    private final Film invalidReleaseDateFilm = new Film("Name", "Description.",
-            15, LocalDate.of(1895, 12, 28).minusDays(15));
+                    "Invalid description. Invalid description. Invalid description. ")
+            .duration(15)
+            .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+    private final Film invalidNameFilm = Film.builder()
+            .name("")
+            .description("Description.")
+            .duration(15)
+            .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+    private final Film invalidDurationFilm = Film.builder()
+            .name("Name")
+            .description("Description.")
+            .duration(0)
+            .releaseDate(LocalDate.of(1895, 12, 28).plusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+    private final Film invalidReleaseDateFilm = Film.builder()
+            .name("Name")
+            .description("Description.")
+            .duration(15)
+            .releaseDate(LocalDate.of(1895, 12, 28).minusDays(15))
+            .mpa(new Mpa(1, null))
+            .genres(new LinkedHashSet<Genre>(Set.of(new Genre(1, null))))
+            .build();
+
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -49,6 +97,7 @@ class FilmControllerTest {
     @BeforeEach
     void setup() {
         filmController.deleteAllFilms();
+
     }
 
     @Test
@@ -73,7 +122,7 @@ class FilmControllerTest {
                 post("/films")
                         .content(objectMapper.writeValueAsString(film1))
                         .contentType(MediaType.APPLICATION_JSON));
-        updatedFilm.setId(1);
+        updatedFilm.setId(5);
         mockMvc.perform(
                         put("/films")
                                 .content(objectMapper.writeValueAsString(updatedFilm))

@@ -1,48 +1,58 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 
-import java.util.LinkedHashSet;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserStorage userStorage;
 
-    public UserService(UserStorage userStorage) {
-        this.userStorage = userStorage;
-    }
-
     public void addToFriends(Integer firstUserId, Integer secondUserId) {
-        User firstUser = userStorage.getUserById(firstUserId);
-        User secondUser = userStorage.getUserById(secondUserId);
-        firstUser.getFriends().add(secondUser.getId());
-        secondUser.getFriends().add(firstUser.getId());
+        userStorage.addFriends(firstUserId, secondUserId);
     }
 
     public void deleteFriend(Integer firstUserId, Integer secondUserId) {
-        User firstUser = userStorage.getUserById(firstUserId);
-        User secondUser = userStorage.getUserById(secondUserId);
-        firstUser.getFriends().remove(secondUser.getId());
-        secondUser.getFriends().remove(firstUser.getId());
+        userStorage.deleteFriend(firstUserId, secondUserId);
     }
 
     public Set<User> getMutualFriends(Integer firstUserId, Integer secondUserId) {
-        User firstUser = userStorage.getUserById(firstUserId);
-        User secondUser = userStorage.getUserById(secondUserId);
-
-        return firstUser.getFriends().stream()
-                .filter(id -> secondUser.getFriends().contains(id))
-                .map(userStorage::getUserById)
-                .collect(Collectors.toSet());
+        return new HashSet<>(userStorage.getMutualFriends(firstUserId, secondUserId));
     }
 
-    public Set<User> getUsersFriends(Integer id) {
-        return userStorage.getUserById(id).getFriends().stream()
-                .map(userStorage::getUserById)
-                .collect(Collectors.toCollection(LinkedHashSet::new));
+    public List<User> getUsersFriends(Integer id) {
+        return userStorage.getUsersFriends(id);
+    }
+
+    public void deleteAllUsers() {
+        userStorage.deleteAllUsers();
+    }
+
+    public User addUser(User user) {
+        return userStorage.addUser(checkUsersName(user));
+    }
+
+    public User updateUser(User user) {
+        return userStorage.updateUser(checkUsersName(user));
+    }
+
+    public Set<User> getAllUsers() {
+        return userStorage.getAllUsers();
+    }
+
+    public User getUserById(Integer id) {
+        return userStorage.getUserById(id);
+    }
+
+    private User checkUsersName(User user) {
+        if (user.getName() == null || user.getName().isBlank())
+            user.setName(user.getLogin());
+        return user;
     }
 }

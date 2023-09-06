@@ -1,31 +1,24 @@
 package ru.yandex.practicum.filmorate.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Past;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
 
 @Data
+@AllArgsConstructor
 public class User {
+    private int id;
+    @NotEmpty(message = "Введен пустой email.")
     @Email(message = "Введен некорректный email.")
     private final String email;
     @NotEmpty(message = "Введен пустой логин.")
+    @Pattern(regexp = "^[a-zA-Z0-9]{1,30}$",
+            message = "Логин должен состоять только из цифр и букв и быть длиной 1 - 30 символов")
     private final String login;
-    @Past(message = "Введена недопустимая дата рождения.")
+    @NotNull(message = "Введена пустая дата рождения.")
+    @PastOrPresent(message = "Введена недопустимая дата рождения.")
     private final LocalDate birthday;
-    private int id;
     private String name;
-    private Set<Integer> friends = new HashSet<>();
-
-    public User(String email, String login, LocalDate birthday, int id, String name) {
-        this.email = email;
-        this.login = login;
-        this.birthday = birthday;
-        this.id = id;
-        this.name = name;
-    }
 }
